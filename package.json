@@ -1,0 +1,23 @@
+{
+	"name": "fiction-logs",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"start:client": "npm run dev -w client"
+	},
+	"workspaces": [
+    "api",
+		"client"
+	],
+	"prettier": {
+		"useTabs": true,
+		"printWidth": 110,
+		"tabWidth": 2,
+		"bracketSameLine": true,
+		"arrowParens": "avoid"
+	},
+	"engines": {
+		"node": ">=16.0.0",
+		"npm": ">=8.0.0"
+	}
+}
