@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { createStyles, Tabs } from "@mantine/core";
 import { Photo, Settings, Edit } from "tabler-icons-react";
 
@@ -38,16 +39,36 @@ function TheTabs() {
 	);
 }
 
-export default function IndexPage() {
+function TheComp() {
 	const { classes } = useStyles();
-	const profile = useContext(ProfileContext);
+	const profileCon = useContext(ProfileContext);
 
 	return (
-		<ProfileContext.Provider value={ProfileContextDefaultValue}>
-			<div className={classes.root}>
-				<ProfileHeader name={profile.name} image={profile.image} />
-				<TheTabs />
-			</div>
+		<div className={classes.root}>
+			<ProfileHeader name={profileCon.name} image={profileCon.image} />
+			<TheTabs />
+		</div>
+	);
+}
+
+export default function IndexPage() {
+	const router = useRouter();
+	let { profile } = router.query;
+
+	useEffect(() => {
+		if (profile == null || profile == "") {
+			router.push("/me");
+		}
+	});
+
+	let namex = profile?.toString() || "lol";
+	return (
+		<ProfileContext.Provider
+			value={{
+				name: namex,
+				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
+			}}>
+			<TheComp />
 		</ProfileContext.Provider>
 	);
 }
