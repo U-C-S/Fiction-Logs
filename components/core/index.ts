@@ -1,1 +1,1 @@
-export { ProfileHeader } from "./Profile";
+export { ProfileHeader } from "./ProfileHeader";
