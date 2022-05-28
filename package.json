@@ -3,7 +3,9 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"start:client": "npm run dev -w client"
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start"
 	},
 	"dependencies": {
 		"@mantine/core": "^4.2.6",
