@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react";
 import { createStyles, Tabs } from "@mantine/core";
 import { Photo, Settings, Edit } from "tabler-icons-react";
 
-import { ProfileHeader } from "../components/core";
-import { ProfileContext, ProfileContextDefaultValue } from "../lib/profileContext";
+import { ProfileHeader } from "../../components/core";
+import { ProfileContext, ProfileContextDefaultValue } from "../../lib/profileContext";
 
 const useStyles = createStyles(() => ({
 	root: {
