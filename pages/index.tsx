@@ -1,7 +1,9 @@
+import React, { useContext, useState } from "react";
 import { createStyles, Tabs } from "@mantine/core";
-import React, { useState } from "react";
 import { Photo, Settings, Edit } from "tabler-icons-react";
+
 import { ProfileHeader } from "../components/core";
+import { ProfileContext, ProfileContextDefaultValue } from "../lib/profileContext";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -36,17 +38,16 @@ function TheTabs() {
 
 export default function IndexPage() {
 	const { classes } = useStyles();
-	const [profile, setProfile] = useState({
-		name: "Manté",
-		image: "https://avatars.dicebear.com/api/avataaars/chanakya555.svg",
-	});
+	const profile = useContext(ProfileContext);
 
 	return (
-		<div className={classes.root}>
-			<ProfileHeader name={profile.name} image={profile.image} />
-			<div className="thetabs">
-				<TheTabs />
+		<ProfileContext.Provider value={ProfileContextDefaultValue}>
+			<div className={classes.root}>
+				<ProfileHeader name={profile.name} image={profile.image} />
+				<div className="thetabs">
+					<TheTabs />
+				</div>
 			</div>
-		</div>
+		</ProfileContext.Provider>
 	);
 }
