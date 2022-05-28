@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { Avatar, createStyles } from "@mantine/core";
 import React from "react";
 
 interface IProfileHeaderProps {
@@ -18,12 +18,14 @@ const useStyles = createStyles(() => ({
 			fontSize: "3rem",
 		},
 
-		img: {
+		[".mantine-Avatar-root"]: {
 			backgroundColor: "aliceblue",
-			padding: "0.5rem",
 			borderRadius: "50%",
-			width: "80px",
-			height: "80px",
+			padding: "10px",
+		},
+
+		[".mantine-Avatar-image"]: {
+			borderRadius: "50%",
 		},
 	},
 }));
@@ -33,7 +35,7 @@ export function ProfileHeader({ name, image }: IProfileHeaderProps) {
 
 	return (
 		<div className={classes.root}>
-			<img src={image} alt={name} />
+			<Avatar src={image} size={100} alt={name} />
 			<h1>{name}</h1>
 		</div>
 	);

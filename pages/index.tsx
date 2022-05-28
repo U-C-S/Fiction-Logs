@@ -22,17 +22,19 @@ const useStyles = createStyles(() => ({
 
 function TheTabs() {
 	return (
-		<Tabs grow>
-			<Tabs.Tab label="Watched" icon={<Photo size={16} />}>
-				Gallery tab content
-			</Tabs.Tab>
-			<Tabs.Tab label="Planning" icon={<Edit size={16} />}>
-				Messages tab content
-			</Tabs.Tab>
-			<Tabs.Tab label="Settings" icon={<Settings size={16} />}>
-				Settings tab content
-			</Tabs.Tab>
-		</Tabs>
+		<div className="thetabs">
+			<Tabs grow>
+				<Tabs.Tab label="Watched" icon={<Photo size={16} />}>
+					Gallery tab content
+				</Tabs.Tab>
+				<Tabs.Tab label="Planning" icon={<Edit size={16} />}>
+					Messages tab content
+				</Tabs.Tab>
+				<Tabs.Tab label="Settings" icon={<Settings size={16} />}>
+					Settings tab content
+				</Tabs.Tab>
+			</Tabs>
+		</div>
 	);
 }
 
@@ -44,9 +46,7 @@ export default function IndexPage() {
 		<ProfileContext.Provider value={ProfileContextDefaultValue}>
 			<div className={classes.root}>
 				<ProfileHeader name={profile.name} image={profile.image} />
-				<div className="thetabs">
-					<TheTabs />
-				</div>
+				<TheTabs />
 			</div>
 		</ProfileContext.Provider>
 	);
