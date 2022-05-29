@@ -2,7 +2,7 @@ import { createStyles, Tabs } from "@mantine/core";
 import React, { useContext } from "react";
 import { Photo, Edit, Settings } from "tabler-icons-react";
 import { ProfileContext } from "../../lib/profileContext";
-import { FilmCard, ProfileHeader } from "../core";
+import { ControlsOverlay, FilmCard, ProfileHeader } from "../core";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -45,7 +45,9 @@ export default function TheComp() {
 						Settings tab content
 					</Tabs.Tab>
 				</Tabs>
-			</div>{" "}
+			</div>
+
+			<ControlsOverlay />
 		</div>
 	);
 }
