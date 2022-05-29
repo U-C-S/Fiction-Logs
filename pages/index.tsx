@@ -1,5 +1,6 @@
-import { Button, createStyles, Divider } from "@mantine/core";
-import React from "react";
+import { Button, createStyles, Divider, Modal, Text, Title } from "@mantine/core";
+import React, { useState } from "react";
+import { LoginForm } from "../components/core";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -14,31 +15,24 @@ const useStyles = createStyles(() => ({
 		height: "300px",
 		color: "aliceblue",
 		textAlign: "center",
-		fontFamily: "Nunito",
-	},
-
-	btns: {
-		margin: "20px auto",
-		width: "80%",
-		display: "flex",
-		justifyContent: "space-around",
 	},
 }));
 
 export default function Page() {
+	const [opened, setOpened] = useState(false);
 	const { classes } = useStyles();
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.container}>
-				<h1>Fiction Logs</h1>
+				<Title order={1}>Fiction Logs</Title>
 				<Divider my="sm" />
-				<p>A Simple Web App to store your film watch lists</p>
-				<div className={classes.btns}>
-					<Button>Login</Button>
-					<Button>SignUp</Button>
-				</div>
+				<Text style={{ margin: "15px" }}>A Simple Web App to store your film watch lists</Text>
+				<Button onClick={() => setOpened(true)}>Authenticate Now</Button>
 			</div>
+			<Modal centered opened={opened} onClose={() => setOpened(false)} title="Welcome to Fiction Logs!">
+				<LoginForm />
+			</Modal>
 		</div>
 	);
 }

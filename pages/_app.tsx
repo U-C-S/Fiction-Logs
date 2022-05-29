@@ -15,9 +15,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				withNormalizeCSS
 				theme={{
 					headings: {
-						fontFamily: "Amatic SC, sans-serif",
+						fontFamily: "Nunito, sans-serif",
 					},
-					fontFamily: "Ubuntu, sans-serif",
+					fontFamily: "Nunito, sans-serif",
 					primaryColor: "red",
 					primaryShade: 6,
 					colorScheme: "dark",
