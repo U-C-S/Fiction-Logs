@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, useToggle, upperFirst } from "@mantine/hooks";
+import { useForm, useToggle } from "@mantine/hooks";
 import {
 	TextInput,
 	PasswordInput,
@@ -15,6 +15,7 @@ import {
 
 export function LoginForm(props: PaperProps<"div">) {
 	const [type, toggle] = useToggle("Login", ["Login", "Register"]);
+
 	const form = useForm({
 		initialValues: {
 			email: "",
@@ -29,13 +30,17 @@ export function LoginForm(props: PaperProps<"div">) {
 		},
 	});
 
+	function onSubmit(values: any) {
+		console.log(values);
+	}
+
 	return (
 		<Paper radius="md" p="xl" withBorder {...props}>
 			<Text size="lg" weight={500} align="center">
 				{type}
 			</Text>
 
-			<form onSubmit={form.onSubmit(() => {})}>
+			<form onSubmit={form.onSubmit(onSubmit)}>
 				<Group direction="column" grow>
 					{type === "Register" && (
 						<TextInput
@@ -77,7 +82,7 @@ export function LoginForm(props: PaperProps<"div">) {
 					<Anchor component="button" type="button" color="gray" onClick={() => toggle()} size="xs">
 						{type === "Register" ? "Already have an account? Login" : "Don't have an account? Register"}
 					</Anchor>
-					<Button type="submit">{upperFirst(type)}</Button>
+					<Button type="submit">{type}</Button>
 				</Group>
 			</form>
 		</Paper>
