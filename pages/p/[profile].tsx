@@ -1,62 +1,34 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { createStyles, Tabs } from "@mantine/core";
-import { Photo, Settings, Edit } from "tabler-icons-react";
+import { Center, createStyles, Loader, Tabs } from "@mantine/core";
 
-import { ProfileHeader } from "../../components/core";
-import { ProfileContext, ProfileContextDefaultValue } from "../../lib/profileContext";
+import { ProfileContext } from "../../lib/profileContext";
+import dynamic from "next/dynamic";
 
-const useStyles = createStyles(() => ({
-	root: {
-		padding: "1rem",
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		flexDirection: "column",
-
-		[".thetabs"]: {
-			marginTop: "1rem",
-			width: "clamp(320px, 75%, 600px)",
-		},
+const LoggedIn = dynamic(
+	async () => {
+		const [ProfileHeader] = await Promise.all([
+			import("../../components/layout/LoggedIn"),
+			new Promise(resolve => setTimeout(resolve, 3000)),
+		]);
+		return ProfileHeader;
 	},
-}));
-
-function TheTabs() {
-	return (
-		<div className="thetabs">
-			<Tabs grow>
-				<Tabs.Tab label="Watched" icon={<Photo size={16} />}>
-					Gallery tab content
-				</Tabs.Tab>
-				<Tabs.Tab label="Planning" icon={<Edit size={16} />}>
-					Messages tab content
-				</Tabs.Tab>
-				<Tabs.Tab label="Settings" icon={<Settings size={16} />}>
-					Settings tab content
-				</Tabs.Tab>
-			</Tabs>
-		</div>
-	);
-}
-
-function TheComp() {
-	const { classes } = useStyles();
-	const profileCon = useContext(ProfileContext);
-
-	return (
-		<div className={classes.root}>
-			<ProfileHeader name={profileCon.name} image={profileCon.image} />
-			<TheTabs />
-		</div>
-	);
-}
+	{
+		ssr: false,
+		loading: () => (
+			<Center style={{ width: "100vw", height: "100vh" }}>
+				<Loader color="red" variant="bars" />
+			</Center>
+		),
+	}
+);
 
 export default function IndexPage() {
 	const router = useRouter();
 	let { profile } = router.query;
 
 	useEffect(() => {
-		if (profile == null || profile == "") {
+		if (false) {
 			router.push("/me");
 		}
 	});
@@ -68,7 +40,7 @@ export default function IndexPage() {
 				name: namex,
 				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
 			}}>
-			<TheComp />
+			<LoggedIn />
 		</ProfileContext.Provider>
 	);
 }
