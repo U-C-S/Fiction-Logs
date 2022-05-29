@@ -2,7 +2,7 @@ import React, { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Center, createStyles, Loader, Tabs } from "@mantine/core";
 
-import { ProfileContext } from "../../lib/profileContext";
+import { IFilmData, ProfileContext } from "../../lib/profileContext";
 import dynamic from "next/dynamic";
 
 const LoggedIn = dynamic(
@@ -24,6 +24,7 @@ const LoggedIn = dynamic(
 );
 
 export default function IndexPage() {
+	const [list, updateList] = useState<IFilmData[]>([]);
 	const router = useRouter();
 	let { profile } = router.query;
 
@@ -39,6 +40,8 @@ export default function IndexPage() {
 			value={{
 				name: namex,
 				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
+				watchedList: list,
+				updateWatchList: updateList,
 			}}>
 			<LoggedIn />
 		</ProfileContext.Provider>

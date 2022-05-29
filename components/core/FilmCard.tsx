@@ -1,5 +1,6 @@
 import { createStyles, Paper, Title } from "@mantine/core";
 import React from "react";
+import { IFilmData } from "../../lib/profileContext";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -23,13 +24,6 @@ const useStyles = createStyles(() => ({
 	},
 }));
 
-interface IFilmData {
-	title: string;
-	rating: number;
-	watchedOn: string;
-	comment: string;
-}
-
 export function FilmCard({ data }: { data: IFilmData }) {
 	const { classes } = useStyles();
 
@@ -39,7 +33,7 @@ export function FilmCard({ data }: { data: IFilmData }) {
 				<Title order={3}>{data.title}</Title>
 				<div>
 					<p>⭐ {data.rating}</p>
-					<p>{data.watchedOn}</p>
+					<p>{data.watchedOn.toISOString().slice(0, 10)}</p>
 				</div>
 			</div>
 		</Paper>
