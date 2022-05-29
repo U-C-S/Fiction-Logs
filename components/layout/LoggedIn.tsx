@@ -2,7 +2,7 @@ import { createStyles, Tabs } from "@mantine/core";
 import React, { useContext } from "react";
 import { Photo, Edit, Settings } from "tabler-icons-react";
 import { ProfileContext } from "../../lib/profileContext";
-import { ProfileHeader } from "../core";
+import { FilmCard, ProfileHeader } from "../core";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -29,7 +29,14 @@ export default function TheComp() {
 			<div className="thetabs">
 				<Tabs grow>
 					<Tabs.Tab label="Watched" icon={<Photo size={20} />}>
-						Gallery tab content
+						<FilmCard
+							data={{
+								title: "The Shawshank Redemption",
+								rating: 9.2,
+								watchedOn: "2021-05-20",
+								comment: "Awesome",
+							}}
+						/>
 					</Tabs.Tab>
 					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
 						Messages tab content
