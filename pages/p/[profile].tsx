@@ -25,6 +25,7 @@ const LoggedIn = dynamic(
 
 export default function IndexPage() {
 	const [list, updateList] = useState<IFilmData[]>([]);
+	const [planningList, updatePlanningList] = useState<string[]>([]);
 	const router = useRouter();
 	let { profile } = router.query;
 
@@ -42,6 +43,8 @@ export default function IndexPage() {
 				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
 				watchedList: list,
 				updateWatchList: updateList,
+				planningList: planningList,
+				updatePlanningList: updatePlanningList,
 			}}>
 			<LoggedIn />
 		</ProfileContext.Provider>

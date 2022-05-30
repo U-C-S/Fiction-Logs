@@ -17,7 +17,11 @@ export default function AddFilmForm() {
 	});
 
 	function AddToList(values: IFilmData) {
-		profile.updateWatchList((c: any) => [...c, values]);
+		if (type === "Watched") {
+			profile.updateWatchList((c: any) => [...c, values]);
+		} else if (type === "Planning") {
+			profile.updatePlanningList((c: any) => [...c, values.title]);
+		}
 	}
 
 	return (

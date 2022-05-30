@@ -1,6 +1,7 @@
-import { createStyles, Paper, Title } from "@mantine/core";
-import React from "react";
-import { IFilmData } from "../../lib/profileContext";
+import { createStyles, Menu, Paper, Title } from "@mantine/core";
+import React, { useContext } from "react";
+import { Trash } from "tabler-icons-react";
+import { IFilmData, ProfileContext } from "../../lib/profileContext";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -35,6 +36,28 @@ export function FilmCard({ data }: { data: IFilmData }) {
 					<p>⭐ {data.rating}</p>
 					<p>{data.watchedOn.toISOString().slice(0, 10)}</p>
 				</div>
+			</div>
+		</Paper>
+	);
+}
+
+export function PlanningFilmCard({ name }: { name: string }) {
+	const { classes } = useStyles();
+	const profileCon = useContext(ProfileContext);
+
+	function Delete() {
+		profileCon.updatePlanningList([...profileCon.planningList.filter(film => film !== name)]);
+	}
+	return (
+		<Paper shadow="xs" radius="md" p={`10px 15px`} withBorder style={{ backgroundColor: "#1e1a1a" }}>
+			<div className={classes.root}>
+				<Title order={3}>{name}</Title>
+				<Menu>
+					<Menu.Item>Set as Watched</Menu.Item>
+					<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
+						Delete
+					</Menu.Item>
+				</Menu>
 			</div>
 		</Paper>
 	);

@@ -1,8 +1,8 @@
-import { createStyles, Stack, Tabs } from "@mantine/core";
+import { createStyles, SimpleGrid, Stack, Tabs } from "@mantine/core";
 import React, { useContext } from "react";
 import { Photo, Edit, Settings } from "tabler-icons-react";
 import { ProfileContext } from "../../lib/profileContext";
-import { ControlsOverlay, FilmCard, ProfileHeader } from "../core";
+import { ControlsOverlay, FilmCard, PlanningFilmCard, ProfileHeader } from "../core";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -36,7 +36,11 @@ export default function TheComp() {
 						</Stack>
 					</Tabs.Tab>
 					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
-						Messages tab content
+						<SimpleGrid cols={2}>
+							{profileCon.planningList.map(film => (
+								<PlanningFilmCard name={film} key={film} />
+							))}
+						</SimpleGrid>
 					</Tabs.Tab>
 					<Tabs.Tab label="Settings" icon={<Settings size={20} />}>
 						Settings tab content
