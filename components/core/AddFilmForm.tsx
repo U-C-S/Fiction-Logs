@@ -2,15 +2,22 @@ import { Paper, TextInput, Group, NumberInput, Button, Stack, Checkbox } from "@
 import { DatePicker } from "@mantine/dates";
 import { useForm, useToggle } from "@mantine/hooks";
 import React, { useContext } from "react";
-import { IWatchedFilm, ProfileContext } from "../../lib/profileContext";
+import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
 
-export default function AddFilmForm() {
+interface IAddFilmFormProps {
+	isAlreadyPlanning?: boolean;
+	film?: IPlanningFilm;
+}
+
+export default function AddFilmForm(
+	{ isAlreadyPlanning, film }: IAddFilmFormProps = { isAlreadyPlanning: false, film: {} as IPlanningFilm }
+) {
 	const [type, toggle] = useToggle("Watched", ["Watched", "Planning"]);
 	const profile = useContext(ProfileContext);
 	const theform = useForm<IWatchedFilm>({
 		initialValues: {
-			id: Math.floor(Math.random() * 1000),
-			title: "",
+			id: film?.id || Math.floor(Math.random() * 1000),
+			title: film?.title || "",
 			watchedOn: new Date(),
 			rating: 0,
 			comment: "",
@@ -18,17 +25,26 @@ export default function AddFilmForm() {
 	});
 
 	function AddToList(values: IWatchedFilm) {
-		switch (type) {
-			case "Watched":
-				profile.updateList(c => {
-					return { watchedList: c.watchedList.concat(values), planningList: c.planningList };
-				});
-				break;
-			case "Planning":
-				profile.updateList(c => {
-					return { watchedList: c.watchedList, planningList: c.planningList.concat(values) };
-				});
-				break;
+		if (isAlreadyPlanning) {
+			profile.updateList(list => {
+				return {
+					watchedList: list.watchedList.concat(values),
+					planningList: list.planningList.filter(x => x.id !== values.id),
+				};
+			});
+		} else {
+			switch (type) {
+				case "Watched":
+					profile.updateList(c => {
+						return { watchedList: c.watchedList.concat(values), planningList: c.planningList };
+					});
+					break;
+				case "Planning":
+					profile.updateList(c => {
+						return { watchedList: c.watchedList, planningList: c.planningList.concat(values) };
+					});
+					break;
+			}
 		}
 	}
 
@@ -40,9 +56,15 @@ export default function AddFilmForm() {
 						required
 						label="Title"
 						value={theform.values.title}
+						disabled={isAlreadyPlanning}
 						onChange={event => theform.setFieldValue("title", event.currentTarget.value)}
 					/>
-					<Checkbox checked={type === "Planning"} label="Planning to Watch ??" onChange={() => toggle()} />
+					<Checkbox
+						checked={type === "Planning"}
+						label="Planning to Watch ??"
+						onChange={() => toggle()}
+						disabled={isAlreadyPlanning}
+					/>
 					{type === "Watched" && (
 						<>
 							<Group grow>

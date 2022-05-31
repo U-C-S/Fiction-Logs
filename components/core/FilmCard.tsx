@@ -1,8 +1,8 @@
-import { createStyles, Menu, Paper, Title } from "@mantine/core";
-import { useId } from "@mantine/hooks";
-import React, { useContext } from "react";
+import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
+import React, { useContext, useState } from "react";
 import { Trash } from "tabler-icons-react";
 import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
+import AddFilmForm from "./AddFilmForm";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -45,6 +45,7 @@ export function FilmCard({ data }: { data: IWatchedFilm }) {
 export function PlanningFilmCard({ id, title }: IPlanningFilm) {
 	const { classes } = useStyles();
 	const profileCon = useContext(ProfileContext);
+	const [openedModal, setOpenedModal] = useState(false);
 
 	function Delete() {
 		profileCon.updateList(list => {
@@ -52,17 +53,21 @@ export function PlanningFilmCard({ id, title }: IPlanningFilm) {
 			return { watchedList: list.watchedList, planningList: list.planningList };
 		});
 	}
+
 	return (
 		<Paper shadow="xs" radius="md" p={`10px 15px`} withBorder style={{ backgroundColor: "#1e1a1a" }}>
 			<div className={classes.root}>
 				<Title order={3}>{title}</Title>
 				<Menu>
-					<Menu.Item>Set as Watched</Menu.Item>
+					<Menu.Item onClick={() => setOpenedModal(true)}>Set as Watched</Menu.Item>
 					<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
 						Delete
 					</Menu.Item>
 				</Menu>
 			</div>
+			<Modal opened={openedModal} onClose={() => setOpenedModal(false)} title="Want to add something ?">
+				<AddFilmForm isAlreadyPlanning film={{ id, title }} />
+			</Modal>
 		</Paper>
 	);
 }
