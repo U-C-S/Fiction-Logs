@@ -14,7 +14,7 @@ const useStyles = createStyles(() => ({
 
 		[".thetabs"]: {
 			marginTop: "1rem",
-			width: "clamp(360px, 75%, 600px)",
+			width: "clamp(320px, 70%, 600px)",
 		},
 	},
 }));
@@ -41,9 +41,6 @@ export default function TheComp() {
 								<PlanningFilmCard title={film.title} id={film.id} key={film.id} />
 							))}
 						</SimpleGrid>
-					</Tabs.Tab>
-					<Tabs.Tab label="Settings" icon={<Settings size={20} />}>
-						Settings tab content
 					</Tabs.Tab>
 				</Tabs>
 			</div>
