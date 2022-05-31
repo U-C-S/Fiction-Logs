@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
+import { IFilmList, IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
 import dynamic from "next/dynamic";
 import { LoadingScreen } from "../../components/core";
 
@@ -20,8 +20,7 @@ const LoggedIn = dynamic(
 );
 
 export default function IndexPage() {
-	const [list, updateList] = useState<IWatchedFilm[]>([]);
-	const [planningList, updatePlanningList] = useState<IPlanningFilm[]>([]);
+	const [list, updateList] = useState<IFilmList>({ watchedList: [], planningList: [] });
 	const router = useRouter();
 	let { profile } = router.query;
 
@@ -37,10 +36,8 @@ export default function IndexPage() {
 			value={{
 				name: namex,
 				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
-				watchedList: list,
-				updateWatchList: updateList,
-				planningList: planningList,
-				updatePlanningList: updatePlanningList,
+				list,
+				updateList,
 			}}>
 			<LoggedIn />
 		</ProfileContext.Provider>

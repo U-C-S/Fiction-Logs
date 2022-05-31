@@ -47,7 +47,10 @@ export function PlanningFilmCard({ id, title }: IPlanningFilm) {
 	const profileCon = useContext(ProfileContext);
 
 	function Delete() {
-		profileCon.updatePlanningList([...profileCon.planningList.filter(film => film.id !== id)]);
+		profileCon.updateList(list => {
+			list.planningList = list.planningList.filter(x => x.id !== id);
+			return { watchedList: list.watchedList, planningList: list.planningList };
+		});
 	}
 	return (
 		<Paper shadow="xs" radius="md" p={`10px 15px`} withBorder style={{ backgroundColor: "#1e1a1a" }}>

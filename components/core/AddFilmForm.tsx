@@ -18,10 +18,17 @@ export default function AddFilmForm() {
 	});
 
 	function AddToList(values: IWatchedFilm) {
-		if (type === "Watched") {
-			profile.updateWatchList((c: any) => [...c, values]);
-		} else if (type === "Planning") {
-			profile.updatePlanningList((c: any) => [...c, { title: values.title, id: values.id }]);
+		switch (type) {
+			case "Watched":
+				profile.updateList(c => {
+					return { watchedList: c.watchedList.concat(values), planningList: c.planningList };
+				});
+				break;
+			case "Planning":
+				profile.updateList(c => {
+					return { watchedList: c.watchedList, planningList: c.planningList.concat(values) };
+				});
+				break;
 		}
 	}
 

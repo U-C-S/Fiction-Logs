@@ -30,14 +30,14 @@ export default function TheComp() {
 				<Tabs grow>
 					<Tabs.Tab label="Watched" icon={<Photo size={20} />}>
 						<Stack>
-							{profileCon.watchedList.map(film => (
+							{profileCon.list.watchedList.map(film => (
 								<FilmCard data={film} key={film.title} />
 							))}
 						</Stack>
 					</Tabs.Tab>
 					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
 						<SimpleGrid cols={2}>
-							{profileCon.planningList.map(film => (
+							{profileCon.list.planningList.map(film => (
 								<PlanningFilmCard title={film.title} id={film.id} key={film.id} />
 							))}
 						</SimpleGrid>
