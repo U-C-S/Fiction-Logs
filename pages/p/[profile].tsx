@@ -1,9 +1,9 @@
-import React, { Suspense, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Center, createStyles, Loader, Tabs } from "@mantine/core";
 
 import { IFilmData, ProfileContext } from "../../lib/profileContext";
 import dynamic from "next/dynamic";
+import { LoadingScreen } from "../../components/core";
 
 const LoggedIn = dynamic(
 	async () => {
@@ -15,11 +15,7 @@ const LoggedIn = dynamic(
 	},
 	{
 		ssr: false,
-		loading: () => (
-			<Center style={{ width: "100vw", height: "100vh" }}>
-				<Loader color="red" variant="bars" />
-			</Center>
-		),
+		loading: () => <LoadingScreen />,
 	}
 );
 
