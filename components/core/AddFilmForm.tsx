@@ -2,13 +2,14 @@ import { Paper, TextInput, Group, NumberInput, Button, Stack, Checkbox } from "@
 import { DatePicker } from "@mantine/dates";
 import { useForm, useToggle } from "@mantine/hooks";
 import React, { useContext } from "react";
-import { IFilmData, ProfileContext } from "../../lib/profileContext";
+import { IWatchedFilm, ProfileContext } from "../../lib/profileContext";
 
 export default function AddFilmForm() {
 	const [type, toggle] = useToggle("Watched", ["Watched", "Planning"]);
 	const profile = useContext(ProfileContext);
-	const theform = useForm<IFilmData>({
+	const theform = useForm<IWatchedFilm>({
 		initialValues: {
+			id: Math.floor(Math.random() * 1000),
 			title: "",
 			watchedOn: new Date(),
 			rating: 0,
@@ -16,11 +17,11 @@ export default function AddFilmForm() {
 		},
 	});
 
-	function AddToList(values: IFilmData) {
+	function AddToList(values: IWatchedFilm) {
 		if (type === "Watched") {
 			profile.updateWatchList((c: any) => [...c, values]);
 		} else if (type === "Planning") {
-			profile.updatePlanningList((c: any) => [...c, values.title]);
+			profile.updatePlanningList((c: any) => [...c, { title: values.title, id: values.id }]);
 		}
 	}
 

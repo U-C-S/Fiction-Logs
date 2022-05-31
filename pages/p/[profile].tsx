@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { IFilmData, ProfileContext } from "../../lib/profileContext";
+import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
 import dynamic from "next/dynamic";
 import { LoadingScreen } from "../../components/core";
 
@@ -20,8 +20,8 @@ const LoggedIn = dynamic(
 );
 
 export default function IndexPage() {
-	const [list, updateList] = useState<IFilmData[]>([]);
-	const [planningList, updatePlanningList] = useState<string[]>([]);
+	const [list, updateList] = useState<IWatchedFilm[]>([]);
+	const [planningList, updatePlanningList] = useState<IPlanningFilm[]>([]);
 	const router = useRouter();
 	let { profile } = router.query;
 

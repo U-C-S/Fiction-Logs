@@ -38,7 +38,7 @@ export default function TheComp() {
 					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
 						<SimpleGrid cols={2}>
 							{profileCon.planningList.map(film => (
-								<PlanningFilmCard name={film} key={film} />
+								<PlanningFilmCard title={film.title} id={film.id} key={film.id} />
 							))}
 						</SimpleGrid>
 					</Tabs.Tab>
