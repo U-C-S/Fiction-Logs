@@ -2,7 +2,7 @@ import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
 import React, { useContext, useState } from "react";
 import { Trash } from "tabler-icons-react";
 import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
-import AddFilmForm from "./AddFilmForm";
+import FilmForm from "./FilmForm";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -66,7 +66,7 @@ export function PlanningFilmCard({ id, title }: IPlanningFilm) {
 				</Menu>
 			</div>
 			<Modal opened={openedModal} onClose={() => setOpenedModal(false)} title="Want to add something ?">
-				<AddFilmForm isAlreadyPlanning film={{ id, title }} />
+				<FilmForm isAlreadyPlanning film={{ id, title }} />
 			</Modal>
 		</Paper>
 	);

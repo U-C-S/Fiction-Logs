@@ -9,7 +9,7 @@ const LoggedIn = dynamic(
 	async () => {
 		const [ProfileHeader] = await Promise.all([
 			import("../../components/layout/LoggedIn"),
-			new Promise(resolve => setTimeout(resolve, 3000)),
+			new Promise(resolve => setTimeout(resolve, 1500)),
 		]);
 		return ProfileHeader;
 	},

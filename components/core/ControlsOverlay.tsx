@@ -1,7 +1,7 @@
 import { ActionIcon, Affix, Button, Divider, Modal, Paper } from "@mantine/core";
 import { useState } from "react";
 import { Home2, Plus, Settings } from "tabler-icons-react";
-import AddFilmForm from "./AddFilmForm";
+import FilmForm from "./FilmForm";
 
 export function ControlsOverlay() {
 	const [opened, setOpened] = useState(false);
@@ -32,7 +32,7 @@ export function ControlsOverlay() {
 			</div>
 
 			<Modal opened={opened} onClose={() => setOpened(false)} title="Want to add something ?">
-				<AddFilmForm />
+				<FilmForm />
 			</Modal>
 		</Affix>
 	);

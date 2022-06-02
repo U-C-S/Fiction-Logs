@@ -9,7 +9,7 @@ interface IAddFilmFormProps {
 	film?: IPlanningFilm;
 }
 
-export default function AddFilmForm(
+export default function FilmForm(
 	{ isAlreadyPlanning, film }: IAddFilmFormProps = { isAlreadyPlanning: false, film: {} as IPlanningFilm }
 ) {
 	const [type, toggle] = useToggle("Watched", ["Watched", "Planning"]);
