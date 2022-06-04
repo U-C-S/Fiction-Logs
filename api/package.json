@@ -1,0 +1,9 @@
+{
+	"name": "api",
+	"devDependencies": {
+		"prisma": "^3.14.0"
+	},
+	"scripts": {
+		"init": "prisma init"
+	}
+}

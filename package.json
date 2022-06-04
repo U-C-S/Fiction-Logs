@@ -2,6 +2,7 @@
 	"name": "fiction-logs",
 	"license": "MIT",
 	"private": true,
+	"workspaces": ["./api"],
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
