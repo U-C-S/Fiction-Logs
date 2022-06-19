@@ -1,7 +1,7 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-prisma.profiles
+prisma.profile
 	.create({
 		data: {
 			name: "John Doe",
@@ -14,7 +14,7 @@ prisma.profiles
 			console.log(profile);
 		},
 		err => {
-			prisma.profiles.count().then(count => {
+			prisma.profile.count().then(count => {
 				console.log("Count: ", count);
 			});
 		}
