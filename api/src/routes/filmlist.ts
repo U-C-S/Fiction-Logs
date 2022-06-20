@@ -52,4 +52,25 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 			message: `${film.name} has added to ${name}`,
 		});
 	});
+
+	fastify.delete("/:name", async (request, reply) => {
+		const { name } = request.params as { name: string };
+		const { filmname } = request.body as any;
+
+		await prisma.profile.update({
+			where: { name: name },
+			data: {
+				film: {
+					delete: {
+						name: filmname,
+					},
+				},
+			},
+		});
+
+		return reply.send({
+			success: true,
+			message: `${filmname} has deleted from ${name}`,
+		});
+	});
 }
