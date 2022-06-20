@@ -11,23 +11,24 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 			where: {
 				AND: [
 					{
-						name: { equals: name },
-						is_watched: { equals: watched },
+						profile: { name: { equals: name } },
+						is_watched: { equals: watched == "true" },
 					},
 				],
 			},
+
 			select: {
 				name: true,
 				created_at: true,
-				comment: watched ? true : false,
-				rating: watched ? true : false,
-				watched_on: watched ? true : false,
+				comment: watched == "true" ? true : false,
+				rating: watched == "true" ? true : false,
+				watched_on: watched == "true" ? true : false,
 			},
 		});
 
 		return reply.send({
 			success: true,
-			message: "Success",
+			message: "Success" + name,
 			data: films,
 		});
 	});
