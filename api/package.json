@@ -11,7 +11,7 @@
 		"typescript": "^4.7.4"
 	},
 	"scripts": {
-		"start": "ts-node src/index.ts",
+		"start": "ts-node src/app.ts",
 		"init": "prisma init",
 		"pull": "prisma db pull",
 		"generate": "prisma generate"
