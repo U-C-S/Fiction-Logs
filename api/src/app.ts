@@ -1,9 +1,12 @@
 import fastify from "fastify";
 
+import prismaPlugin from "./plugins/prisma";
 import { profileRoutes } from "./routes/profile";
 
 export const build = (opts = {}) => {
 	const app = fastify(opts);
+
+	app.register(prismaPlugin);
 
 	app.register(profileRoutes, { prefix: "/api/profile" });
 

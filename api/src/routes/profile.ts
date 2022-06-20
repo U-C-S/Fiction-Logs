@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-import fastify, { FastifyInstance } from "fastify";
-
-const prisma = new PrismaClient();
+import { FastifyInstance } from "fastify";
 
 export async function profileRoutes(fastify: FastifyInstance) {
+	let { prisma } = fastify;
+
 	fastify.get("/", async (request, reply) => {
 		const profiles = await prisma.profile.findMany();
 		return profiles;
