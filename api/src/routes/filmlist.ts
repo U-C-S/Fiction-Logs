@@ -34,25 +34,21 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 
 	fastify.post("/:name", async (request, reply) => {
 		const { name } = request.params as { name: string };
-		const filmname = (await request.body) as string; //filmName
+		const { filmname } = request.body as any;
 
-		const profile = await prisma.profile.update({
-			where: {
-				name: name,
-			},
+		const film = await prisma.film.create({
 			data: {
-				film: {
-					create: {
-						name: filmname,
-						is_watched: false,
-					},
+				name: filmname,
+				is_watched: false,
+				profile: {
+					connect: { name: name },
 				},
 			},
 		});
 
 		return reply.send({
 			success: true,
-			message: `${profile.name} has added ${filmname}`,
+			message: `${film.name} has added to ${name}`,
 		});
 	});
 }
