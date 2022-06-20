@@ -32,20 +32,27 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 		});
 	});
 
-	fastify.post("/", async (request, reply) => {
-		const { name, description, releaseDate, rating, duration, imageUrl, trailerUrl } = request.body as any;
-		// const film = await prisma.film.create({
-		// 	data: {
-		// 		name,
+	fastify.post("/:name", async (request, reply) => {
+		const { name } = request.params as { name: string };
+		const filmname = (await request.body) as string; //filmName
 
-		// 		releaseDate,
-		// 		rating,
-		// 		duration,
-		// 		imageUrl,
-		// 		trailerUrl,
-		// 	},
-		// });
+		const profile = await prisma.profile.update({
+			where: {
+				name: name,
+			},
+			data: {
+				film: {
+					create: {
+						name: filmname,
+						is_watched: false,
+					},
+				},
+			},
+		});
 
-		// return film;
+		return reply.send({
+			success: true,
+			message: `${profile.name} has added ${filmname}`,
+		});
 	});
 }
