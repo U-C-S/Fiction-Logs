@@ -15,13 +15,13 @@ const useStyles = createStyles(() => ({
 		h1: {
 			color: "aliceblue",
 			fontFamily: "Nunito",
-			fontSize: "3rem",
+			fontSize: "2.5rem",
 		},
 
 		[".mantine-Avatar-root"]: {
 			backgroundColor: "aliceblue",
 			borderRadius: "50%",
-			padding: "10px",
+			padding: "2px",
 		},
 
 		[".mantine-Avatar-image"]: {
@@ -35,7 +35,7 @@ export function ProfileHeader({ name, image }: IProfileHeaderProps) {
 
 	return (
 		<div className={classes.root}>
-			<Avatar src={image} size={100} alt={name} />
+			<Avatar src={image} size={80} alt={name} />
 			<h1>{name}</h1>
 		</div>
 	);

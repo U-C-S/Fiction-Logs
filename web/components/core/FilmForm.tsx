@@ -58,6 +58,7 @@ export default function FilmForm(
 						value={theform.values.title}
 						disabled={isAlreadyPlanning}
 						onChange={event => theform.setFieldValue("title", event.currentTarget.value)}
+						data-autoFocus
 					/>
 					<Checkbox
 						checked={type === "Planning"}

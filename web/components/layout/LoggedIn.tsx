@@ -6,7 +6,7 @@ import { ControlsOverlay, FilmCard, PlanningFilmCard, ProfileHeader } from "../c
 
 const useStyles = createStyles(() => ({
 	root: {
-		padding: "1rem",
+		padding: "0.5rem",
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -14,7 +14,7 @@ const useStyles = createStyles(() => ({
 
 		[".thetabs"]: {
 			marginTop: "1rem",
-			width: "clamp(320px, 70%, 600px)",
+			width: "clamp(300px, 60%, 550px)",
 		},
 	},
 }));

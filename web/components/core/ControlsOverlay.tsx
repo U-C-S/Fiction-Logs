@@ -1,4 +1,4 @@
-import { ActionIcon, Affix, Button, Divider, Modal, Paper } from "@mantine/core";
+import { ActionIcon, Affix, Button, Divider, Modal, Paper, Transition } from "@mantine/core";
 import { useState } from "react";
 import { Home2, Plus, Settings } from "tabler-icons-react";
 import FilmForm from "./FilmForm";
@@ -17,13 +17,13 @@ export function ControlsOverlay() {
 							alignItems: "center",
 							columnGap: "0.8rem",
 						}}>
-						<Button leftIcon={<Plus />} onClick={() => setOpened(true)}>
-							Add
-						</Button>
-						<Divider orientation="vertical" style={{ width: "1px", height: "36px" }} />
 						<ActionIcon p={5} variant="hover" size="lg" color={"indigo"}>
 							<Home2 />
 						</ActionIcon>
+						<Button leftIcon={<Plus />} onClick={() => setOpened(true)} color={"indigo"}>
+							Add
+						</Button>
+						{/* <Divider orientation="vertical" style={{ width: "1px", height: "36px" }} /> */}
 						<ActionIcon p={5} variant="hover" size="lg" color={"indigo"}>
 							<Settings />
 						</ActionIcon>
@@ -31,7 +31,15 @@ export function ControlsOverlay() {
 				</Paper>
 			</div>
 
-			<Modal opened={opened} onClose={() => setOpened(false)} title="Want to add something ?">
+			<Modal
+				title="Want to add something ?"
+				opened={opened}
+				onClose={() => setOpened(false)}
+				centered
+				overlayBlur={1}
+				transition="pop"
+				transitionDuration={350}
+				transitionTimingFunction="ease">
 				<FilmForm />
 			</Modal>
 		</Affix>
