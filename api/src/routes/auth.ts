@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { hashSync } from "@node-rs/bcrypt";
 
 export async function authRoutes(fastify: FastifyInstance) {
 	let { prisma } = fastify;
@@ -30,7 +31,7 @@ export async function authRoutes(fastify: FastifyInstance) {
 		await prisma.profile.create({
 			data: {
 				name,
-				password,
+				password: hashSync(password, 10),
 				email,
 			},
 		});
