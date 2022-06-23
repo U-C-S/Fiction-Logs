@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"start": "ts-node src/app.ts",
-		"dev": "nodemon src/app.ts"
+		"dev": "nodemon src/app.ts",
 		"init": "prisma init",
 		"pull": "prisma db pull",
 		"generate": "prisma generate"
