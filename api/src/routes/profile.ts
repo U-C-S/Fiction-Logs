@@ -12,7 +12,7 @@ export async function profileRoutes(fastify: FastifyInstance) {
 		const { name } = request.params as { name: string };
 
 		const profile = await prisma.profile.findUnique({
-			where: { name ,},
+			where: { name },
 		});
 		if (!profile) {
 			return reply.code(404).send({
@@ -26,7 +26,7 @@ export async function profileRoutes(fastify: FastifyInstance) {
 			data: profile,
 		});
 	});
-
+	/*
 	fastify.post("/", async (request, reply) => {
 		const { name, email, password } = request.body as any;
 		let profile;
@@ -44,4 +44,5 @@ export async function profileRoutes(fastify: FastifyInstance) {
 		}
 		return profile;
 	});
+	*/
 }
