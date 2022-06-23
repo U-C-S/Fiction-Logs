@@ -4,6 +4,7 @@ import fastify, { FastifyServerOptions } from "fastify";
 import prismaPlugin from "./plugins/prisma";
 import { filmListRoutes } from "./routes/filmlist";
 import { profileRoutes } from "./routes/profile";
+import { authRoutes } from "./routes/auth";
 
 export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 	const app = fastify(opts);
@@ -16,6 +17,7 @@ export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 
 	app.register(profileRoutes, { prefix: "/api/profile" });
 	app.register(filmListRoutes, { prefix: "/api/filmlist" });
+	app.register(authRoutes, { prefix: "/api/auth" });
 
 	return app;
 }
