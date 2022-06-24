@@ -6,6 +6,10 @@
 		"./api",
 		"./web"
 	],
+	"scripts": {
+		"dev": "npm run dev --workspaces",
+		"init": "npm install"
+	},
 	"prettier": {
 		"useTabs": true,
 		"printWidth": 110,

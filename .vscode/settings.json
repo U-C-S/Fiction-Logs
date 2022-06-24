@@ -1,0 +1,17 @@
+{
+	"git.autofetch": true,
+	"git.autofetchPeriod": 6000,
+
+	"files.autoSave": "afterDelay",
+	"files.autoSaveDelay": 3000,
+
+	"editor.minimap.enabled": false,
+	"editor.guides.bracketPairs": "active",
+	"editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
+	"editor.fontLigatures": true,
+	"editor.formatOnSave": true,
+
+	"[typescript][json][javascript][typescriptreact][jsonc][javascriptreact][html][css][scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}
