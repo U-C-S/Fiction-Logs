@@ -5,10 +5,12 @@ import prismaPlugin from "./plugins/prisma";
 import { filmListRoutes } from "./routes/filmlist";
 import { profileRoutes } from "./routes/profile";
 import { authRoutes } from "./routes/auth";
+import jwtPlugin from "./plugins/jwt-auth";
 
 export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 	const app = fastify(opts);
 
+	app.register(jwtPlugin);
 	app.register(prismaPlugin);
 	app.register(fastifyCors, {
 		methods: ["GET", "POST", "PUT", "DELETE"],
