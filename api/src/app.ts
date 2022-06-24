@@ -19,7 +19,7 @@ export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 
 	app.register(profileRoutes, { prefix: "/api/profile" });
 	app.register(filmListRoutes, { prefix: "/api/filmlist" });
-	app.register(authRoutes, { prefix: "/api/auth" });
+	app.register(authRoutes, { prefix: "/auth" });
 
 	return app;
 }
@@ -39,6 +39,6 @@ let serverOpts: FastifyServerOptions = {
 // server
 buildFastifyServer(serverOpts).listen({ port: parseInt(process.env.PORT || "3100") }, (err, address) => {
 	if (err) {
-		console.log(err);
+		console.error(err);
 	}
 });

@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { hashSync } from "@node-rs/bcrypt";
+import bcrypt from "@node-rs/bcrypt";
 
 export async function authRoutes(fastify: FastifyInstance) {
 	let { prisma } = fastify;
@@ -13,7 +13,7 @@ export async function authRoutes(fastify: FastifyInstance) {
 
 		let code: number;
 		if (!profile) code = 404;
-		else if (profile?.password !== password) code = 403;
+		else if (!(await bcrypt.compare(password, profile.password))) code = 403;
 		else code = 200;
 
 		if (code != 200) {
@@ -29,7 +29,7 @@ export async function authRoutes(fastify: FastifyInstance) {
 			data: {
 				token: await reply.jwtSign({
 					id: profile?.id as number,
-					username: profile?.name as string,
+					username: name,
 				}),
 			},
 		});
@@ -41,7 +41,7 @@ export async function authRoutes(fastify: FastifyInstance) {
 		await prisma.profile.create({
 			data: {
 				name,
-				password: hashSync(password, 10),
+				password: await bcrypt.hash(password, 8),
 				email,
 			},
 		});
