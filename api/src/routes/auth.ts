@@ -51,4 +51,25 @@ export async function authRoutes(fastify: FastifyInstance) {
 			message: "Success",
 		});
 	});
+
+	fastify.delete("/delete/:name", async (request, reply) => {
+		const { name } = request.params as { name: string };
+
+		await prisma.film.deleteMany({
+			where: {
+				profile: {
+					name,
+				},
+			},
+		});
+
+		await prisma.profile.delete({
+			where: { name },
+		});
+
+		return reply.send({
+			success: true,
+			message: `${name} has deleted`,
+		});
+	});
 }
