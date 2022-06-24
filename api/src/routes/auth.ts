@@ -11,17 +11,27 @@ export async function authRoutes(fastify: FastifyInstance) {
 			where: { name },
 		});
 
-		if (profile?.password != password) {
-			return reply.send({
+		let code: number;
+		if (!profile) code = 404;
+		else if (profile?.password !== password) code = 403;
+		else code = 200;
+
+		if (code != 200) {
+			return reply.code(code).send({
 				success: false,
-				message: "Wrong username or password",
+				message: "Invalid credentials",
 			});
 		}
 
 		return reply.send({
 			success: true,
 			message: "Success",
-			data: profile,
+			data: {
+				token: await reply.jwtSign({
+					id: profile?.id as number,
+					username: profile?.name as string,
+				}),
+			},
 		});
 	});
 
