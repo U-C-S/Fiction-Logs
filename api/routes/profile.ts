@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { jwtUserPayload } from "../../types/jwt";
+import { jwtUserPayload } from "../types/jwt";
 
 export async function profileRoutes(fastify: FastifyInstance) {
 	let { prisma } = fastify;

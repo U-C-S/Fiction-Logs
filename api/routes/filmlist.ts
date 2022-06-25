@@ -1,6 +1,6 @@
 import { film } from "@prisma/client";
 import { FastifyInstance } from "fastify";
-import { jwtUserPayload } from "../../types/jwt";
+import { jwtUserPayload } from "../types/jwt";
 
 export async function filmListRoutes(fastify: FastifyInstance) {
 	let { prisma } = fastify;
