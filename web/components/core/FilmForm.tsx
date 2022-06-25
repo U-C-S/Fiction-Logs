@@ -16,7 +16,7 @@ export default function FilmForm(
 	const profile = useContext(ProfileContext);
 	const theform = useForm<IWatchedFilm>({
 		initialValues: {
-			id: film?.id || Math.floor(Math.random() * 1000),
+			id: film?.id || Math.floor(Math.random() * 1000), // get the value of it from api
 			title: film?.title || "",
 			watchedOn: new Date(),
 			rating: 0,
@@ -58,7 +58,7 @@ export default function FilmForm(
 						value={theform.values.title}
 						disabled={isAlreadyPlanning}
 						onChange={event => theform.setFieldValue("title", event.currentTarget.value)}
-						data-autoFocus
+						data-autofocus
 					/>
 					<Checkbox
 						checked={type === "Planning"}

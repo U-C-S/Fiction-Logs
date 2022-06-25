@@ -7,7 +7,6 @@
 		"./web"
 	],
 	"scripts": {
-		"dev": "npm run dev --workspaces",
 		"init": "npm install"
 	},
 	"prettier": {
