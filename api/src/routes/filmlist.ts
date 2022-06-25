@@ -1,5 +1,6 @@
 import { film } from "@prisma/client";
 import { FastifyInstance } from "fastify";
+import { jwtUserPayload } from "../../types/jwt";
 
 export async function filmListRoutes(fastify: FastifyInstance) {
 	let { prisma } = fastify;
@@ -48,25 +49,33 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 		});
 	});
 
-	fastify.post("/:name", async (request, reply) => {
-		const { name } = request.params as { name: string };
-		const { filmname } = request.body as any;
+	fastify.post(
+		"/",
 
-		const film = await prisma.film.create({
-			data: {
-				name: filmname,
-				is_watched: false,
-				profile: {
-					connect: { name: name },
+		{
+			onRequest: [fastify.authenticate],
+		},
+
+		async (request, reply) => {
+			const { id } = request.user as jwtUserPayload;
+			const { filmname } = request.body as any;
+
+			const film = await prisma.film.create({
+				data: {
+					name: filmname,
+					is_watched: false,
+					profile: {
+						connect: { id },
+					},
 				},
-			},
-		});
+			});
 
-		return reply.send({
-			success: true,
-			message: `${film.name} has added to ${name}`,
-		});
-	});
+			return reply.send({
+				success: true,
+				message: `${film.name} has added to ${id}`,
+			});
+		}
+	);
 
 	fastify.delete("/:name", async (request, reply) => {
 		const { name } = request.params as { name: string };
