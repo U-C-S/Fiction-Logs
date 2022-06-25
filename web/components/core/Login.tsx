@@ -8,13 +8,13 @@ import {
 	Group,
 	PaperProps,
 	Button,
-	Divider,
 	Checkbox,
 	Anchor,
 } from "@mantine/core";
+import Router from "next/router";
 
 export function LoginForm(props: PaperProps<"div">) {
-	const [type, toggle] = useToggle("Login", ["Login", "Register"]);
+	const [formType, toggleFormType] = useToggle("login", ["login", "register"]);
 
 	const form = useForm({
 		initialValues: {
@@ -24,40 +24,63 @@ export function LoginForm(props: PaperProps<"div">) {
 			terms: true,
 		},
 
-		validationRules: {
-			email: val => /^\S+@\S+$/.test(val),
-			password: val => val.length >= 8,
-		},
+		// validationRules: {
+		// 	email: val => /^\S+@\S+$/.test(val),
+		// 	password: val => val.length >= 4,
+		// },
 	});
 
-	function onSubmit(values: any) {
+	const submitEvent = async (values: typeof form.values) => {
 		console.log(values);
-	}
+
+		let fetchOpts = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				email: values.email,
+				name: values.name,
+				password: values.password,
+			}),
+		};
+
+		let res = await fetch(`${process.env.API_URL}/auth/${formType}`, fetchOpts);
+		let resData = await res.json();
+
+		console.log(resData);
+		if (resData.success) {
+			localStorage.setItem("jwt", resData.data.token);
+			localStorage.setItem("user", resData.data.username);
+			Router.push(`/p/${values.name}`);
+		}
+	};
 
 	return (
 		<Paper radius="md" p="xl" withBorder {...props}>
 			<Text size="lg" weight={500} align="center">
-				{type}
+				{formType}
 			</Text>
 
-			<form onSubmit={form.onSubmit(onSubmit)}>
+			<form onSubmit={form.onSubmit(submitEvent)}>
 				<Group direction="column" grow>
-					{type === "Register" && (
+					{formType === "register" && (
 						<TextInput
-							label="Name"
-							placeholder="Your name"
-							value={form.values.name}
-							onChange={event => form.setFieldValue("name", event.currentTarget.value)}
+							required
+							label="Email"
+							placeholder="hello@films.com"
+							value={form.values.email}
+							onChange={event => form.setFieldValue("email", event.currentTarget.value)}
+							error={form.errors.email && "Invalid email"}
 						/>
 					)}
 
 					<TextInput
 						required
-						label="Email"
-						placeholder="hello@films.com"
-						value={form.values.email}
-						onChange={event => form.setFieldValue("email", event.currentTarget.value)}
-						error={form.errors.email && "Invalid email"}
+						label="Name"
+						placeholder="Your name"
+						value={form.values.name}
+						onChange={event => form.setFieldValue("name", event.currentTarget.value)}
 					/>
 
 					<PasswordInput
@@ -69,7 +92,7 @@ export function LoginForm(props: PaperProps<"div">) {
 						error={form.errors.password && "Password should include at least 8 characters"}
 					/>
 
-					{type === "Register" && (
+					{formType === "register" && (
 						<Checkbox
 							label="I accept terms and conditions"
 							checked={form.values.terms}
@@ -79,10 +102,10 @@ export function LoginForm(props: PaperProps<"div">) {
 				</Group>
 
 				<Group position="apart" mt="xl">
-					<Anchor component="button" type="button" color="gray" onClick={() => toggle()} size="xs">
-						{type === "Register" ? "Already have an account? Login" : "Don't have an account? Register"}
+					<Anchor component="button" type="button" color="gray" onClick={() => toggleFormType()} size="xs">
+						{formType === "register" ? "Already have an account? Login" : "Don't have an account? Register"}
 					</Anchor>
-					<Button type="submit">{type}</Button>
+					<Button type="submit">{formType}</Button>
 				</Group>
 			</form>
 		</Paper>

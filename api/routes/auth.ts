@@ -31,6 +31,7 @@ export async function authRoutes(fastify: FastifyInstance) {
 					id: profile?.id as number,
 					username: name,
 				}),
+				username: name,
 			},
 		});
 	});
