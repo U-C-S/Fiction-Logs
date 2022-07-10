@@ -12,30 +12,35 @@ export async function profileRoutes(fastify: FastifyInstance) {
 			let name = (request.user as jwtUserPayload).username;
 			const result = await getProfile(name);
 
-			if (!result.success) {
-				return reply.code(404).send({ message: "Profile not found" });
-			}
-
-			let { created_at, email } = result.data;
-			reply.code(200).send({
-				succes: true,
-				data: { name, created_at, email },
-			});
+			return reply.code(result.success ? 200 : 400).send(result);
 		}
 	);
 
-	fastify.get("/:name", async (request, reply) => {
+	fastify.get(
+		"/all",
+		{
+			onRequest: [fastify.authenticate],
+		},
+		async (request, reply) => {
+			const result = await getProfile((request.user as jwtUserPayload).username, true);
+
+			reply.code(result.success ? 200 : 400).send(result);
+		}
+	);
+
+	fastify.get("/byname/:name", async (request, reply) => {
 		const { name } = request.params as { name: string };
 
-		const profile = await getProfile(name);
+		const result = await getProfile(name);
 
-		if (!profile.success) {
-			return reply.code(404).send({
-				success: false,
-				message: "Profile not found",
-			});
-		}
+		return reply.code(result.success ? 200 : 400).send(result);
+	});
 
-		return reply.send(profile);
+	fastify.get("/byname/:name/all", async (request, reply) => {
+		const { name } = request.params as { name: string };
+
+		const result = await getProfile(name, true);
+
+		return reply.code(result.success ? 200 : 400).send(result);
 	});
 }

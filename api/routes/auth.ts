@@ -9,8 +9,9 @@ export async function authRoutes(fastify: FastifyInstance) {
 	fastify.post("/login", async (request, reply) => {
 		const { name, password } = request.body as any;
 
-		const result = await getProfile(name);
+		const result = await getProfile(name, false, true);
 
+		// fastify.log.info(result);
 		if (result.success && (await bcrypt.compare(password, result.data.password))) {
 			return reply.send({
 				success: true,

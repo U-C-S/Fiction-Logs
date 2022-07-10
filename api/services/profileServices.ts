@@ -35,10 +35,29 @@ export async function createProfile({ name, password, email }: any): IQuery<{
 	}
 }
 
-export async function getProfile(name: string): IQuery<profile> {
+export async function getProfile(name: string, all: boolean = false, pswd: boolean = false): IQuery<any> {
 	try {
 		let x = await prisma.profile.findUniqueOrThrow({
 			where: { name },
+			select: {
+				created_at: true,
+				name: true,
+				email: true,
+				id: true,
+				password: pswd,
+				film: all
+					? {
+							select: {
+								id: all,
+								name: all,
+								comment: all,
+								is_watched: all,
+								watched_on: all,
+								rating: all,
+							},
+					  }
+					: false,
+			},
 		});
 
 		return {
