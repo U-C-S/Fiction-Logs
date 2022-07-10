@@ -4,7 +4,7 @@ import { jwtUserPayload } from "../types/jwt";
 
 export async function profileRoutes(fastify: FastifyInstance) {
 	fastify.get(
-		"/",
+		"/me",
 		{
 			onRequest: [fastify.authenticate],
 		},
@@ -13,18 +13,6 @@ export async function profileRoutes(fastify: FastifyInstance) {
 			const result = await getProfile(name);
 
 			return reply.code(result.success ? 200 : 400).send(result);
-		}
-	);
-
-	fastify.get(
-		"/all",
-		{
-			onRequest: [fastify.authenticate],
-		},
-		async (request, reply) => {
-			const result = await getProfile((request.user as jwtUserPayload).username, true);
-
-			reply.code(result.success ? 200 : 400).send(result);
 		}
 	);
 
