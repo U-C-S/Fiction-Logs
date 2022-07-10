@@ -4,32 +4,35 @@ import { IQuery } from "../types/IQuery";
 
 const prisma = new PrismaClient();
 
-export async function getFilms(profilename: string, is_watched: boolean = true): Promise<film[]> {
+/**
+ * @param profilename just name of profile to get his films
+ * @param is_watched if not used, returns all films of the user
+ * @returns films of the user
+ */
+export async function getFilms(profilename: string, is_watched?: boolean): Promise<film[]> {
 	return await prisma.film.findMany({
 		where: {
 			AND: [
 				{
 					profile: { name: { equals: profilename } },
-					is_watched: { equals: is_watched },
+					is_watched: is_watched === undefined ? undefined : { equals: is_watched === true }, // if is_watched is undefined, then get all films
 				},
 			],
 		},
 	});
 }
 
-export async function checkFilm(profilename: string, filmId: number) {
-	const film = await prisma.film.findFirstOrThrow({
+export async function checkFilm(profileId: number, filmId: number) {
+	return prisma.film.findFirstOrThrow({
 		where: {
 			AND: [
 				{
-					profile: { name: { equals: profilename } },
-					id: { equals: filmId },
+					id: filmId,
+					watched_by: profileId,
 				},
 			],
 		},
 	});
-
-	return film;
 }
 
 export async function createFilm(
@@ -69,12 +72,14 @@ export async function createFilm(
 	}
 }
 
-export async function updateFilm(film: IFilm): IQuery<null> {
+export async function updateFilm(userId: number, film: IFilm): IQuery<null> {
 	// maybe use prisma.$queryRaw
 	try {
+		let findTheFilm = await checkFilm(userId, film.id);
+
 		await prisma.film.update({
 			where: {
-				id: film.id,
+				id: findTheFilm.id,
 			},
 			data: {
 				name: film.name,
@@ -82,6 +87,28 @@ export async function updateFilm(film: IFilm): IQuery<null> {
 				comment: film.comment,
 				rating: film.is_watched ? film.rating : null,
 				watched_on: film.is_watched ? film.watched_on : null,
+			},
+		});
+
+		return {
+			success: true,
+			data: null,
+		};
+	} catch (error: any) {
+		return {
+			success: false,
+			message: error.message,
+		};
+	}
+}
+
+export async function deleteFilmById(userId: number, filmId: number): IQuery<null> {
+	try {
+		let x = await checkFilm(userId, filmId);
+
+		await prisma.film.delete({
+			where: {
+				id: x.id,
 			},
 		});
 

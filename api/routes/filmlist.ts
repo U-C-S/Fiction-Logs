@@ -1,32 +1,31 @@
 import { film } from "@prisma/client";
 import { FastifyInstance } from "fastify";
-import { createFilm, getFilms, updateFilm } from "../services/filmServices";
+import { createFilm, deleteFilmById, getFilms, updateFilm } from "../services/filmServices";
 import { IFilm } from "../types/IFilm";
 import { jwtUserPayload } from "../types/jwt";
 
 export async function filmListRoutes(fastify: FastifyInstance) {
-	let { prisma } = fastify;
-
 	// Get all list of films of a user
 	fastify.get<{
 		Reply: film[];
-		Params: {
-			name: string;
-		};
 		Querystring: {
+			name: string;
 			watched?: string;
 		};
-	}>("/:name", async (request, reply) => {
-		const { name } = request.params;
-		const { watched } = request.query;
+	}>("/", async (request, reply) => {
+		const { name, watched } = request.query;
 
-		const result = await getFilms(name, watched === "true");
+		let result;
+		if (watched === "true" || watched === "false") {
+			result = await getFilms(name, watched === "true");
+			fastify.log.info(`Get films of user ${name} with watched = ${watched}`);
+		} else result = await getFilms(name);
 
 		return reply.send(result);
 	});
 
 	fastify.post(
-		"/",
+		"/add",
 		{
 			onRequest: [fastify.authenticate],
 		},
@@ -45,28 +44,20 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 		}
 	);
 
-	/*
-	fastify.delete("/:name", async (request, reply) => {
-		const { name } = request.params as { name: string };
-		const { filmname } = request.body as any;
+	fastify.delete(
+		"/delete/:id",
+		{
+			onRequest: [fastify.authenticate],
+		},
+		async (request, reply) => {
+			const { id } = request.params as { id: string };
+			const { id: userId } = request.user as jwtUserPayload;
 
-		await prisma.profile.update({
-			where: { name: name },
-			data: {
-				film: {
-					delete: {
-						name: filmname,
-					},
-				},
-			},
-		});
+			const result = await deleteFilmById(userId, parseInt(id));
 
-		return reply.send({
-			success: true,
-			message: `${filmname} has deleted from ${name}`,
-		});
-	});
-	*/
+			return reply.send(result);
+		}
+	);
 
 	// update film
 	fastify.put(
@@ -75,11 +66,10 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 			onRequest: [fastify.authenticate],
 		},
 		async (request, reply) => {
-			const { username } = request.user as jwtUserPayload;
+			const { id: userId } = request.user as jwtUserPayload;
 			const filmData = request.body as IFilm;
-			
 
-			const result = await updateFilm(filmData);
+			const result = await updateFilm(userId, filmData);
 
 			if (result.success) {
 				return reply.send(result);
