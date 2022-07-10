@@ -4,14 +4,28 @@ import { useRouter } from "next/router";
 import { IFilmList, IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
 import { LoadingScreen } from "../../components/core";
 import useSWR from "swr";
-import { fetcher } from "../../lib/fetcher";
+import { fetcher, fetcherWithAuth } from "../../lib/fetcher";
 import LoggedIn from "../../components/layout/LoggedIn";
+import { IProfileFetchData } from "../../types/profile";
+
+const useProfile = (profileName: string) => {
+	const [fetchedData, updatefetchedData] = useState<IProfileFetchData | null>(null);
+	const { data, error } = useSWR<IProfileFetchData>(
+		!fetchedData ? `/api/profile/byname/${profileName}/all` : null,
+		fetcherWithAuth
+	);
+
+	if (!fetchedData && data) {
+		updatefetchedData(data);
+	}
+
+	return { data: fetchedData, error };
+};
 
 export default function IndexPage() {
-	const [list, updateList] = useState<IFilmList>({ watchedList: [], planningList: [] });
 	const router = useRouter();
 	let { profile } = router.query;
-	const { data, error } = useSWR(`/api/profile/${profile}`, fetcher);
+	const { data, error } = useProfile(profile as string);
 
 	// useEffect(() => {
 	// 	if (false) {
@@ -19,8 +33,8 @@ export default function IndexPage() {
 	// 	}
 	// });
 
-	if (error) return <div>failed to load</div>;
-	if (data == undefined) return <LoadingScreen />;
+	// if (error) return <div>failed to load</div>;
+	if (!data) return <LoadingScreen />;
 
 	let namex = profile?.toString() as string;
 	return (
@@ -28,10 +42,8 @@ export default function IndexPage() {
 			value={{
 				name: namex,
 				image: `https://avatars.dicebear.com/api/avataaars/${namex}.svg`,
-				list,
-				updateList,
 			}}>
-			<LoggedIn />
+			<LoggedIn datax={data} />
 		</ProfileContext.Provider>
 	);
 }
