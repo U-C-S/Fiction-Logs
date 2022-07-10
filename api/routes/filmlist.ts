@@ -1,5 +1,7 @@
 import { film } from "@prisma/client";
 import { FastifyInstance } from "fastify";
+import { createFilm, getFilms, updateFilm } from "../services/filmServices";
+import { IFilm } from "../types/IFilm";
 import { jwtUserPayload } from "../types/jwt";
 
 export async function filmListRoutes(fastify: FastifyInstance) {
@@ -7,11 +9,7 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 
 	// Get all list of films of a user
 	fastify.get<{
-		Reply: {
-			success: boolean;
-			data: film[] | any;
-			message: string;
-		};
+		Reply: film[];
 		Params: {
 			name: string;
 		};
@@ -22,61 +20,32 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 		const { name } = request.params;
 		const { watched } = request.query;
 
-		const films = await prisma.film.findMany({
-			where: {
-				AND: [
-					{
-						profile: { name: { equals: name } },
-						is_watched: { equals: watched == "true" },
-					},
-				],
-			},
+		const result = await getFilms(name, watched === "true");
 
-			select: {
-				name: true,
-				created_at: true,
-				is_watched: true,
-				watched_on: watched == "true" ? true : false,
-				comment: watched == "true" ? true : false,
-				rating: watched == "true" ? true : false,
-			},
-		});
-
-		return reply.send({
-			success: true,
-			message: "Success" + name,
-			data: films,
-		});
+		return reply.send(result);
 	});
 
 	fastify.post(
 		"/",
-
 		{
 			onRequest: [fastify.authenticate],
 		},
 
 		async (request, reply) => {
-			const { id } = request.user as jwtUserPayload;
-			const { filmname } = request.body as any;
+			const { username } = request.user as jwtUserPayload;
+			const filmData = request.body as IFilm;
 
-			const film = await prisma.film.create({
-				data: {
-					name: filmname,
-					is_watched: false,
-					profile: {
-						connect: { id },
-					},
-				},
-			});
+			const result = await createFilm(username, filmData);
 
-			return reply.send({
-				success: true,
-				message: `${film.name} has added to ${id}`,
-			});
+			if (result.success) {
+				return reply.send(result);
+			} else {
+				return reply.code(400).send(result);
+			}
 		}
 	);
 
+	/*
 	fastify.delete("/:name", async (request, reply) => {
 		const { name } = request.params as { name: string };
 		const { filmname } = request.body as any;
@@ -97,28 +66,26 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 			message: `${filmname} has deleted from ${name}`,
 		});
 	});
+	*/
 
 	// update film
-	fastify.put("/:name", async (request, reply) => {
-		const { name } = request.params as { name: string };
-		const { filmname } = request.body as any;
+	fastify.put(
+		"/update",
+		{
+			onRequest: [fastify.authenticate],
+		},
+		async (request, reply) => {
+			const { username } = request.user as jwtUserPayload;
+			const filmData = request.body as IFilm;
+			
 
-		await prisma.film.update({
-			where: { name: filmname },
-			data: {
-				is_watched: true,
-				watched_on: new Date(),
-				comment: "",
-				rating: 0,
-				profile: {
-					connect: { name: name },
-				},
-			},
-		});
+			const result = await updateFilm(filmData);
 
-		return reply.send({
-			success: true,
-			message: `${filmname} has updated to ${name}`,
-		});
-	});
+			if (result.success) {
+				return reply.send(result);
+			} else {
+				return reply.code(400).send(result);
+			}
+		}
+	);
 }
