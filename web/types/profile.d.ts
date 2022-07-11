@@ -7,13 +7,25 @@ export interface IFilm {
 	rating: number | null;
 }
 
+// export type IFilm =
+// 	| {
+// 			is_watched: false;
+// 			id: number;
+// 			name: string;
+// 	  }
+// 	| {
+// 			is_watched: true;
+// 			id: number;
+// 			name: string;
+// 			comment: string;
+// 			watched_on: Date;
+// 			rating: number;
+// 	  };
+
 export interface IProfileFetchData {
-	success: true;
-	data: {
-		id: number;
-		name: string;
-		email: string | null;
-		created_at: Date | null;
-		film: IFilm[];
-	};
+	id: number;
+	name: string;
+	email: string | null;
+	created_at: Date | null;
+	film: IFilm[];
 }

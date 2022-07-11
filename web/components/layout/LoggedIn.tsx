@@ -1,6 +1,7 @@
 import { createStyles, SimpleGrid, Stack, Tabs } from "@mantine/core";
 import React, { useContext } from "react";
 import { Photo, Edit, Settings } from "tabler-icons-react";
+
 import { ProfileContext } from "../../lib/profileContext";
 import { IProfileFetchData } from "../../types/profile";
 import { ControlsOverlay, FilmCard, PlanningFilmCard, ProfileHeader } from "../core";
@@ -20,19 +21,24 @@ const useStyles = createStyles(() => ({
 	},
 }));
 
-export default function TheComp({ datax }: { datax: IProfileFetchData }) {
+export default function TheComp({
+	profileData,
+	isOwner,
+}: {
+	profileData: IProfileFetchData;
+	isOwner: boolean;
+}) {
 	const { classes } = useStyles();
 	const profileCon = useContext(ProfileContext);
-	let { data } = datax;
 
 	return (
 		<div className={classes.root}>
-			<ProfileHeader name={data.name} image={profileCon.image} />
+			<ProfileHeader name={profileData.name} image={profileCon.image} />
 			<div className="thetabs">
 				<Tabs grow>
 					<Tabs.Tab label="Watched" icon={<Photo size={20} />}>
 						<Stack>
-							{data.film.map(film => {
+							{profileData.film.map(film => {
 								if (film.is_watched) {
 									return <FilmCard data={film} key={film.id} />;
 								}
@@ -40,13 +46,13 @@ export default function TheComp({ datax }: { datax: IProfileFetchData }) {
 						</Stack>
 					</Tabs.Tab>
 					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
-						<SimpleGrid cols={2}>
-							{data.film.map(film => {
+						<Stack>
+							{profileData.film.map(film => {
 								if (!film.is_watched) {
-									return <PlanningFilmCard name={film.name} id={film.id} key={film.id} />;
+									return <PlanningFilmCard name={film.name} id={film.id} key={film.id} editable={isOwner} />;
 								}
 							})}
-						</SimpleGrid>
+						</Stack>
 					</Tabs.Tab>
 				</Tabs>
 			</div>
