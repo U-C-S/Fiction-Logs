@@ -5,6 +5,7 @@ import { Photo, Edit, Settings } from "tabler-icons-react";
 import { ProfileContext } from "../../lib/profileContext";
 import { IProfileFetchData } from "../../types/profile";
 import { ControlsOverlay, FilmCard, PlanningFilmCard, ProfileHeader } from "../core";
+import { FilmTabs } from "../core/FilmTabs";
 
 const useStyles = createStyles(() => ({
 	root: {
@@ -13,21 +14,10 @@ const useStyles = createStyles(() => ({
 		justifyContent: "center",
 		alignItems: "center",
 		flexDirection: "column",
-
-		[".thetabs"]: {
-			marginTop: "1rem",
-			width: "clamp(300px, 60%, 550px)",
-		},
 	},
 }));
 
-export default function TheComp({
-	profileData,
-	isOwner,
-}: {
-	profileData: IProfileFetchData;
-	isOwner: boolean;
-}) {
+export default function TheComp({ profileData }: { profileData: IProfileFetchData }) {
 	const { classes } = useStyles();
 	// const profileCon = useContext(ProfileContext);
 
@@ -37,29 +27,7 @@ export default function TheComp({
 				name={profileData.name}
 				image={`https://avatars.dicebear.com/api/avataaars/${profileData.name}.svg`}
 			/>
-			<div className="thetabs">
-				<Tabs grow>
-					<Tabs.Tab label="Watched" icon={<Photo size={20} />}>
-						<Stack>
-							{profileData.film.map(film => {
-								if (film.is_watched) {
-									return <FilmCard data={film} key={film.id} />;
-								}
-							})}
-						</Stack>
-					</Tabs.Tab>
-					<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
-						<Stack>
-							{profileData.film.map(film => {
-								if (!film.is_watched) {
-									return <PlanningFilmCard name={film.name} id={film.id} key={film.id} editable={isOwner} />;
-								}
-							})}
-						</Stack>
-					</Tabs.Tab>
-				</Tabs>
-			</div>
-
+			<FilmTabs filmsList={profileData.film} isOwner={false} />
 			<ControlsOverlay />
 		</div>
 	);

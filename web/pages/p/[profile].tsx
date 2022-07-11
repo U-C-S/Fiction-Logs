@@ -9,13 +9,13 @@ import { IProfileFetchData } from "../../types/profile";
 
 const useProfile = (profileName: string) => {
 	const [fetchedData, updatefetchedData] = useState<IProfileFetchData | null>(null);
-	const { data, error } = useSWR<IProfileFetchData>(
+	const { data, error } = useSWR<{ data: IProfileFetchData }>(
 		!fetchedData ? `/api/profile/byname/${profileName}/all` : null,
 		fetcher
 	);
 
 	if (!fetchedData && data) {
-		updatefetchedData(data);
+		updatefetchedData(data.data);
 	}
 
 	return { data: fetchedData, error };
@@ -28,5 +28,5 @@ export default function IndexPage() {
 
 	if (!data) return <LoadingScreen />;
 
-	return <LoggedIn profileData={data} isOwner={false} />;
+	return <LoggedIn profileData={data} />;
 }

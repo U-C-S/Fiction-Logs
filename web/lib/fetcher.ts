@@ -3,22 +3,16 @@ export async function fetcher(...args: [string, RequestInit?]) {
 	return await x.json();
 }
 
-export async function fetcherWithAuth(...args: [string | null, RequestInit?]) {
-	if (args[0] === null) return;
+export async function fetcherWithAuth(args: string | null) {
+	if (args === null) return;
 
-	let x = await fetch(process.env.API_URL + args[0], {
-		method: args[1]?.method && "GET",
+	let x = await fetch(process.env.API_URL + args, {
+		method: "GET",
 		headers: {
 			Authorization: `Bearer ${localStorage.getItem("token")}`,
-			...args[1]?.headers,
+			contentType: "application/json",
 		},
-		body: args[1]?.body,
 	});
 
-	let data = await x.json();
-	if (data.success) {
-		return data;
-	} else {
-		throw new Error(data.message);
-	}
+	return await x.json();
 }

@@ -1,7 +1,7 @@
 import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
 import React, { useContext, useState } from "react";
 import { Trash } from "tabler-icons-react";
-import { IFilm } from "../../types/profile";
+import { IFilm, IWatchedFilm } from "../../types/film";
 import FilmForm from "./FilmForm";
 
 const useStyles = createStyles(() => ({
@@ -26,7 +26,7 @@ const useStyles = createStyles(() => ({
 	},
 }));
 
-export function FilmCard({ data }: { data: IFilm }) {
+export function FilmCard({ data }: { data: IWatchedFilm }) {
 	const { classes } = useStyles();
 
 	return (
