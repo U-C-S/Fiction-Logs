@@ -16,7 +16,7 @@ import { AuthContext } from "../context/authContext";
 
 export function LoginForm(props: PaperProps<"div">) {
 	const [formType, toggleFormType] = useToggle("login", ["login", "register"]);
-	const { authData, setAuth } = useContext(AuthContext);
+	const { setAuth } = useContext(AuthContext);
 
 	const form = useForm({
 		initialValues: {
@@ -31,8 +31,6 @@ export function LoginForm(props: PaperProps<"div">) {
 		// 	password: val => val.length >= 4,
 		// },
 	});
-
-	if (authData) Router.push("/me");
 
 	const submitEvent = async (values: typeof form.values) => {
 		console.log(values);

@@ -1,5 +1,7 @@
 import { Button, createStyles, Divider, Modal, Text, Title } from "@mantine/core";
-import React, { useState } from "react";
+import Router from "next/router";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../components/context/authContext";
 import { LoginForm } from "../components/core";
 
 const useStyles = createStyles(() => ({
@@ -29,6 +31,9 @@ const useStyles = createStyles(() => ({
 export default function Page() {
 	const [opened, setOpened] = useState(false);
 	const { classes } = useStyles();
+	const { authData } = useContext(AuthContext);
+
+	if (authData) Router.push("/me");
 
 	return (
 		<div className={classes.root}>
