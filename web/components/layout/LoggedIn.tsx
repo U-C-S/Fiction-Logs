@@ -29,11 +29,14 @@ export default function TheComp({
 	isOwner: boolean;
 }) {
 	const { classes } = useStyles();
-	const profileCon = useContext(ProfileContext);
+	// const profileCon = useContext(ProfileContext);
 
 	return (
 		<div className={classes.root}>
-			<ProfileHeader name={profileData.name} image={profileCon.image} />
+			<ProfileHeader
+				name={profileData.name}
+				image={`https://avatars.dicebear.com/api/avataaars/${profileData.name}.svg`}
+			/>
 			<div className="thetabs">
 				<Tabs grow>
 					<Tabs.Tab label="Watched" icon={<Photo size={20} />}>

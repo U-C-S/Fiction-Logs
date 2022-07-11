@@ -25,22 +25,12 @@ const useProfile = () => {
 
 export default function IndexPage() {
 	const { authData } = useContext(AuthContext);
-	const [list, setList] = useState<IFilm[]>([]);
+	// const [list, setList] = useState<IFilm[]>([]);
 	const { data, error } = useProfile();
 
 	if (!data) return <LoadingScreen />;
 	// if (error) return <div>failed to load</div>;
 	if (!authData) Router.push("/");
 
-	return (
-		<ProfileContext.Provider
-			value={{
-				name: data.name,
-				image: `https://avatars.dicebear.com/api/avataaars/${data.name}.svg`,
-				list: list,
-				updateList: setList,
-			}}>
-			<LoggedIn profileData={data} isOwner={true} />
-		</ProfileContext.Provider>
-	);
+	return <LoggedIn profileData={data} isOwner={true} />;
 }
