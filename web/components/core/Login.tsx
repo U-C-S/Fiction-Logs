@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm, useToggle } from "@mantine/hooks";
 import {
 	TextInput,
@@ -12,9 +12,11 @@ import {
 	Anchor,
 } from "@mantine/core";
 import Router from "next/router";
+import { AuthContext } from "../context/authContext";
 
 export function LoginForm(props: PaperProps<"div">) {
 	const [formType, toggleFormType] = useToggle("login", ["login", "register"]);
+	const { authData, setAuth } = useContext(AuthContext);
 
 	const form = useForm({
 		initialValues: {
@@ -29,6 +31,8 @@ export function LoginForm(props: PaperProps<"div">) {
 		// 	password: val => val.length >= 4,
 		// },
 	});
+
+	if (authData) Router.push("/me");
 
 	const submitEvent = async (values: typeof form.values) => {
 		console.log(values);
@@ -50,9 +54,10 @@ export function LoginForm(props: PaperProps<"div">) {
 
 		console.log(resData);
 		if (resData.success) {
-			localStorage.setItem("jwt", resData.data.token);
-			localStorage.setItem("user", resData.data.username);
-			Router.push(`/p/${values.name}`);
+			localStorage.setItem("token", resData.data.token);
+			localStorage.setItem("userName", resData.data.username);
+			setAuth({ userName: resData.data.username, token: resData.data.token });
+			// Router.push(`/me`);
 		}
 	};
 
