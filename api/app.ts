@@ -5,6 +5,7 @@ import prismaPlugin from "./plugins/prisma";
 import { filmListRoutes } from "./routes/filmlist";
 import { profileRoutes } from "./routes/profile";
 import { authRoutes } from "./routes/auth";
+import { miscRoutes } from "./routes/misc";
 import jwtPlugin from "./plugins/jwt-auth";
 
 export function buildFastifyServer(opts: FastifyServerOptions = {}) {
@@ -20,6 +21,7 @@ export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 	app.register(profileRoutes, { prefix: "/api/profile" });
 	app.register(filmListRoutes, { prefix: "/api/filmlist" });
 	app.register(authRoutes, { prefix: "/auth" });
+	app.register(miscRoutes, { prefix: "/api/misc" });
 
 	return app;
 }

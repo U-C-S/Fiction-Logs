@@ -24,6 +24,12 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 		return reply.send(result);
 	});
 
+	fastify.get("/me", { onRequest: [fastify.authenticate] }, async (request, reply) => {
+		const { username } = request.user as jwtUserPayload;
+		const result = await getFilms(username);
+		return reply.send(result);
+	});
+
 	fastify.post(
 		"/add",
 		{
