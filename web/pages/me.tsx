@@ -44,7 +44,7 @@ export default function IndexPage() {
 
 	return (
 		<div className={classes.root}>
-			<ProfileHeader name={data.name} image={`https://avatars.dicebear.com/api/avataaars/${data.name}.svg`} />
+			<ProfileHeader name={data.name} image={data.avatar} />
 			<FilmTabsDynamic />
 			<ControlsOverlay />
 		</div>

@@ -3,8 +3,9 @@ import React from "react";
 
 interface IProfileHeaderProps {
 	name: string;
-	image: string;
+	image?: string | null;
 }
+
 const useStyles = createStyles(() => ({
 	root: {
 		display: "flex",
@@ -32,6 +33,9 @@ const useStyles = createStyles(() => ({
 
 export function ProfileHeader({ name, image }: IProfileHeaderProps) {
 	const { classes } = useStyles();
+
+	if (!image) image = `https://avatars.dicebear.com/api/avataaars/${name}.svg`;
+	if (!image.startsWith("http")) image = `https://avatars.dicebear.com/api/avataaars/${image}.svg`;
 
 	return (
 		<div className={classes.root}>

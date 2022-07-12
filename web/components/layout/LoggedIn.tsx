@@ -1,10 +1,8 @@
 import { createStyles, SimpleGrid, Stack, Tabs } from "@mantine/core";
 import React, { useContext } from "react";
-import { Photo, Edit, Settings } from "tabler-icons-react";
 
-import { ProfileContext } from "../../lib/profileContext";
 import { IProfileFetchData } from "../../types/profile";
-import { ControlsOverlay, FilmCard, PlanningFilmCard, ProfileHeader } from "../core";
+import { ControlsOverlay, FilmCard, ProfileHeader } from "../core";
 import { FilmTabs } from "../core/FilmTabs";
 
 const useStyles = createStyles(() => ({
@@ -19,14 +17,10 @@ const useStyles = createStyles(() => ({
 
 export default function TheComp({ profileData }: { profileData: IProfileFetchData }) {
 	const { classes } = useStyles();
-	// const profileCon = useContext(ProfileContext);
 
 	return (
 		<div className={classes.root}>
-			<ProfileHeader
-				name={profileData.name}
-				image={`https://avatars.dicebear.com/api/avataaars/${profileData.name}.svg`}
-			/>
+			<ProfileHeader name={profileData.name} image={profileData.avatar} />
 			<FilmTabs filmsList={profileData.film} isOwner={false} />
 			<ControlsOverlay />
 		</div>

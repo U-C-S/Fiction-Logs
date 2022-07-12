@@ -26,5 +26,6 @@ model profile {
   email      String?   @unique
   github_id  String?   @unique
   password   String    @default("")
+  avatar     String?
   film       film[]
 }

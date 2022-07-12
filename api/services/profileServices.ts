@@ -44,6 +44,7 @@ export async function getProfile(name: string, all: boolean = false, pswd: boole
 				name: true,
 				email: true,
 				id: true,
+				avatar: true,
 				password: pswd,
 				film: all
 					? {
