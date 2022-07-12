@@ -1,4 +1,4 @@
-import { Stack, Tabs } from "@mantine/core";
+import { Space, Stack, Tabs } from "@mantine/core";
 import useSWR from "swr";
 import { Edit, Photo } from "tabler-icons-react";
 import { fetcherWithAuth } from "../../lib/fetcher";
@@ -17,6 +17,7 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 								return <FilmCard data={film} key={film.id} editable={isOwner} />;
 							}
 						})}
+						<Space h={70} />
 					</Stack>
 				</Tabs.Tab>
 				<Tabs.Tab label="Planning" icon={<Edit size={20} />}>

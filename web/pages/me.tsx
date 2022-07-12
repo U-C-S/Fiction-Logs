@@ -8,10 +8,10 @@ import { AuthContext } from "../components/context/AuthContext";
 import { IProfileFetchData } from "../types/profile";
 import { createStyles } from "@mantine/core";
 
-const useProfile = () => {
+const useProfile = (authInfo: any | null) => {
 	const [fetchedData, updatefetchedData] = useState<IProfileFetchData | null>(null);
 	const { data, error } = useSWR<{ success: boolean; data: IProfileFetchData }>(
-		!fetchedData ? `/api/profile/me` : null,
+		!fetchedData && authInfo ? `/api/profile/me` : null,
 		fetcherWithAuth
 	);
 
@@ -34,7 +34,7 @@ const useStyles = createStyles(() => ({
 
 export default function IndexPage() {
 	const { authData } = useContext(AuthContext);
-	const { data, error } = useProfile();
+	const { data, error } = useProfile(authData);
 	const { classes } = useStyles();
 	// const [list, setList] = useState<IFilm[]>([]);
 
