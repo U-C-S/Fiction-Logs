@@ -18,7 +18,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 			comment: isNew ? "" : film?.comment,
 		},
 	});
-	// console.log(theform.values.is_watched, WatchedMode);
+	// console.log(theform.values, film);
 	async function AddToList(values: IFilmFields) {
 		let url;
 		let bodydata;
@@ -72,6 +72,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 								<NumberInput
 									label="Rating"
 									placeholder="⭐ Give it a Rating"
+									value={theform.values.rating as number}
 									min={0}
 									max={10}
 									onChange={v => theform.setFieldValue("rating", v || 2)}
@@ -87,6 +88,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 							<TextInput
 								label="Comment"
 								placeholder="What did you think about it ?"
+								value={theform.values.comment as string}
 								onChange={event => theform.setFieldValue("comment", event.currentTarget.value)}
 							/>
 						</>
