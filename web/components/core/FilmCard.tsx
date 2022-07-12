@@ -1,6 +1,6 @@
-import { ActionIcon, createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
+import { ActionIcon, createStyles, Menu, Modal, Paper, Title, Tooltip } from "@mantine/core";
 import React, { useContext, useState } from "react";
-import { DotsVertical, Edit, Trash } from "tabler-icons-react";
+import { DotsVertical, Edit, InfoCircle, Trash } from "tabler-icons-react";
 import { formType, IFilm, IFilmAlt, IWatchedFilm } from "../../types/film";
 import { FilmForm } from "./FilmForm";
 
@@ -14,6 +14,11 @@ const useStyles = createStyles(() => ({
 		borderRadius: "5px",
 		color: "aliceblue",
 		paddingRight: "8px",
+
+		".info": {
+			display: "flex",
+			alignItems: "center",
+		},
 
 		h3: {
 			fontSize: "1rem",
@@ -60,9 +65,18 @@ export function FilmCard({
 			<div className={classes.root}>
 				<Title order={3}>{data.name}</Title>
 				{!isPlanningCard && (
-					<div>
-						<p>⭐ {data.rating}</p>
-						<p>{data.watched_on?.toString().slice(0, 10)}</p>
+					<div className="info">
+						{data.comment && (
+							<Tooltip label={data.comment} withArrow arrowSize={3}>
+								<ActionIcon variant="hover">
+									<InfoCircle size={20} />
+								</ActionIcon>
+							</Tooltip>
+						)}
+						<div>
+							<p>⭐ {data.rating}</p>
+							<p>{data.watched_on?.toString().slice(0, 10)}</p>
+						</div>
 					</div>
 				)}
 			</div>
