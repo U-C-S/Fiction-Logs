@@ -37,7 +37,7 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 export function FilmTabsDynamic() {
 	const { data, error } = useSWR("/api/filmlist/me", fetcherWithAuth);
 
-	if (!data) return <LoadingScreen />;
+	if (!data) return <LoadingScreen style={{ height: "70vh" }} />;
 
 	return <FilmTabs isOwner filmsList={data} />;
 }

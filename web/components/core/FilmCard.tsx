@@ -67,10 +67,8 @@ export function FilmCard({
 				{!isPlanningCard && (
 					<div className="info">
 						{data.comment && (
-							<Tooltip label={data.comment} withArrow arrowSize={3}>
-								<ActionIcon variant="hover">
-									<InfoCircle size={20} />
-								</ActionIcon>
+							<Tooltip label={data.comment} withArrow arrowSize={3} style={{ paddingRight: "4px" }}>
+								<InfoCircle size={20} />
 							</Tooltip>
 						)}
 						<div>

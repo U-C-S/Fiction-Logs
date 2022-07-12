@@ -1,7 +1,7 @@
 import { Center, Loader } from "@mantine/core";
 import React from "react";
 
-export function LoadingScreen() {
+export function LoadingScreen({ style }: { style?: React.CSSProperties }) {
 	return (
 		<Center
 			style={{
@@ -10,6 +10,7 @@ export function LoadingScreen() {
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
+				...style,
 			}}>
 			<Loader color="red" variant="bars" />
 		</Center>
