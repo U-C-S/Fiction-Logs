@@ -18,7 +18,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 			comment: isNew ? "" : film?.comment,
 		},
 	});
-	// console.log(theform.values, film);
+
 	async function AddToList(values: IFilmFields) {
 		let url;
 		let bodydata;
@@ -39,8 +39,6 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 				bodydata = values;
 				break;
 		}
-
-		// console.warn({ id: film?.id, ...values, is_watched: !isPlanMode });
 
 		let req = await fetch((process.env.API_URL as string) + url, {
 			method,

@@ -61,7 +61,7 @@ export async function filmListRoutes(fastify: FastifyInstance) {
 
 			const result = await deleteFilmById(userId, parseInt(id));
 
-			return reply.send(result);
+			return reply.code(result.success ? 200 : 400).send(result);
 		}
 	);
 

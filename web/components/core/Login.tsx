@@ -11,7 +11,6 @@ import {
 	Checkbox,
 	Anchor,
 } from "@mantine/core";
-import Router from "next/router";
 import { AuthContext } from "../context/AuthContext";
 
 export function LoginForm(props: PaperProps<"div">) {
@@ -33,8 +32,6 @@ export function LoginForm(props: PaperProps<"div">) {
 	});
 
 	const submitEvent = async (values: typeof form.values) => {
-		console.log(values);
-
 		let fetchOpts = {
 			method: "POST",
 			headers: {
