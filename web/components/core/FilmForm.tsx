@@ -4,7 +4,7 @@ import { useForm, useToggle } from "@mantine/hooks";
 import React, { useContext } from "react";
 import { IFilm, formType, IFilmFields, IFilmFormProps } from "../../types/film";
 
-export default function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
+export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 	let isAlreadyPlanning = TypeOfForm === formType.edit_planning;
 	let isNew = TypeOfForm === formType.new;
 

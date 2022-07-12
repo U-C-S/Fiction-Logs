@@ -2,7 +2,7 @@ import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
 import React, { useContext, useState } from "react";
 import { Trash } from "tabler-icons-react";
 import { formType, IFilm, IWatchedFilm } from "../../types/film";
-import FilmForm from "./FilmForm";
+import { FilmForm } from "./FilmForm";
 
 const useStyles = createStyles(() => ({
 	root: {

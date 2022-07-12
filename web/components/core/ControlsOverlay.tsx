@@ -2,7 +2,7 @@ import { ActionIcon, Affix, Button, Divider, Modal, Paper, Transition } from "@m
 import { useState } from "react";
 import { Home2, Plus, Settings } from "tabler-icons-react";
 import { formType } from "../../types/film";
-import FilmForm from "./FilmForm";
+import { FilmForm } from "./FilmForm";
 
 export function ControlsOverlay() {
 	const [opened, setOpened] = useState(false);

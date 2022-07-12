@@ -2,13 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import Router, { useRouter } from "next/router";
 
-import { ProfileContext } from "../lib/profileContext";
 import { fetcher, fetcherWithAuth } from "../lib/fetcher";
-import { ControlsOverlay, LoadingScreen, ProfileHeader } from "../components/core";
+import { ControlsOverlay, LoadingScreen, ProfileHeader, FilmTabsDynamic } from "../components/core";
 import { AuthContext } from "../components/context/AuthContext";
 import { IProfileFetchData } from "../types/profile";
 import { createStyles } from "@mantine/core";
-import { FilmTabsDynamic } from "../components/core/FilmTabs";
 
 const useProfile = () => {
 	const [fetchedData, updatefetchedData] = useState<IProfileFetchData | null>(null);
