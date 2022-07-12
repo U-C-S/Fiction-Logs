@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Edit, Photo } from "tabler-icons-react";
 import { fetcherWithAuth } from "../../lib/fetcher";
 import { IFilm } from "../../types/film";
-import { FilmCard, PlanningFilmCard } from "./FilmCard";
+import { FilmCard } from "./FilmCard";
 import { LoadingScreen } from "./LoadingScreen";
 
 export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: boolean }) {
@@ -14,7 +14,7 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 					<Stack>
 						{filmsList.map(film => {
 							if (film.is_watched) {
-								return <FilmCard data={film} key={film.id} />;
+								return <FilmCard data={film} key={film.id} editable={isOwner} />;
 							}
 						})}
 					</Stack>
@@ -23,7 +23,7 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 					<Stack>
 						{filmsList.map(film => {
 							if (!film.is_watched) {
-								return <PlanningFilmCard name={film.name} id={film.id} key={film.id} editable={isOwner} />;
+								return <FilmCard isPlanningCard data={film} key={film.id} editable={isOwner} />;
 							}
 						})}
 					</Stack>

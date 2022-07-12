@@ -1,7 +1,7 @@
-import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
+import { ActionIcon, createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
 import React, { useContext, useState } from "react";
-import { Trash } from "tabler-icons-react";
-import { formType, IFilm, IWatchedFilm } from "../../types/film";
+import { DotsVertical, Edit, Trash } from "tabler-icons-react";
+import { formType, IFilm, IFilmAlt, IWatchedFilm } from "../../types/film";
 import { FilmForm } from "./FilmForm";
 
 const useStyles = createStyles(() => ({
@@ -13,6 +13,7 @@ const useStyles = createStyles(() => ({
 		width: "100%",
 		borderRadius: "5px",
 		color: "aliceblue",
+		paddingRight: "8px",
 
 		h3: {
 			fontSize: "1rem",
@@ -26,51 +27,66 @@ const useStyles = createStyles(() => ({
 	},
 }));
 
-export function FilmCard({ data }: { data: IWatchedFilm }) {
+export function FilmCard({
+	data,
+	isPlanningCard,
+	editable,
+}: {
+	data: IFilmAlt;
+	isPlanningCard?: boolean;
+	editable?: boolean;
+}) {
 	const { classes } = useStyles();
-
-	return (
-		<Paper shadow="xs" radius="md" p={`5px 15px`} withBorder style={{ backgroundColor: "#1e1a1a" }}>
-			<div className={classes.root}>
-				<Title order={3}>{data.name}</Title>
-				<div>
-					<p>⭐ {data.rating}</p>
-					<p>{data.watched_on?.toString().slice(0, 10)}</p>
-				</div>
-			</div>
-		</Paper>
-	);
-}
-
-export function PlanningFilmCard({ id, name, editable }: { id: number; name: string; editable: boolean }) {
-	const { classes } = useStyles();
-	// const profileCon = useContext(ProfileContext);
 	const [openedModal, setOpenedModal] = useState(false);
 
-	function Delete() {
-		// profileCon.updateList(list => {
-		// 	list.planningList = list.planningList.filter(x => x.id !== id);
-		// 	return { watchedList: list.watchedList, planningList: list.planningList };
-		// });
+	async function Delete() {
+		let req = await fetch(`/api/filmlist/delete/${data.id}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		});
+		req.status === 200 ? alert("Success") : alert("Failed");
 	}
 
 	// add a field to show when the film is added to the planning list
 	return (
-		<Paper shadow="xs" radius="md" p={`10px 15px`} withBorder style={{ backgroundColor: "#1e1a1a" }}>
+		<Paper
+			shadow="xs"
+			radius="md"
+			p={`5px 15px`}
+			withBorder
+			style={{ backgroundColor: "#1e1a1a", display: "flex", alignItems: "center" }}>
 			<div className={classes.root}>
-				<Title order={3}>{name}</Title>
-				{editable && (
-					<Menu>
-						<Menu.Item onClick={() => setOpenedModal(true)}>Set as Watched</Menu.Item>
-						<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
-							Delete
-						</Menu.Item>
-					</Menu>
+				<Title order={3}>{data.name}</Title>
+				{!isPlanningCard && (
+					<div>
+						<p>⭐ {data.rating}</p>
+						<p>{data.watched_on?.toString().slice(0, 10)}</p>
+					</div>
 				)}
 			</div>
 			{editable && (
-				<Modal opened={openedModal} onClose={() => setOpenedModal(false)} title="Want to add something ?">
-					<FilmForm film={{ id, name, is_watched: false }} TypeOfForm={formType.edit_planning} />
+				<Menu
+					control={
+						<ActionIcon>
+							<DotsVertical size={20} />
+						</ActionIcon>
+					}>
+					<Menu.Item icon={<Edit size={14} />} onClick={() => setOpenedModal(true)}>
+						Edit
+					</Menu.Item>
+					<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
+						Delete
+					</Menu.Item>
+				</Menu>
+			)}
+			{editable && (
+				<Modal opened={openedModal} onClose={() => setOpenedModal(false)} title={`Edit "${data.name}"`}>
+					<FilmForm
+						film={data}
+						TypeOfForm={isPlanningCard ? formType.edit_planning : formType.edit_watched}
+					/>
 				</Modal>
 			)}
 		</Paper>
