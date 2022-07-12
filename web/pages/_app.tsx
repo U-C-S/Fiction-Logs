@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { MantineProvider, Tuple } from "@mantine/core";
 import Head from "next/head";
 
-import { AuthContextProvider } from "../components/context/authContext";
+import { AuthContextProvider } from "../components/context/AuthContext";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (

@@ -1,7 +1,7 @@
 import { Button, createStyles, Divider, Modal, Text, Title } from "@mantine/core";
 import Router from "next/router";
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../components/context/authContext";
+import { AuthContext } from "../components/context/AuthContext";
 import { LoginForm } from "../components/core";
 
 const useStyles = createStyles(() => ({

@@ -12,7 +12,7 @@ import {
 	Anchor,
 } from "@mantine/core";
 import Router from "next/router";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 
 export function LoginForm(props: PaperProps<"div">) {
 	const [formType, toggleFormType] = useToggle("login", ["login", "register"]);

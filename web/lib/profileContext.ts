@@ -1,5 +1,5 @@
 import React from "react";
-import { IFilm } from "../types/profile";
+import { IFilm } from "../types/film";
 
 // export interface IPlanningFilm {
 // 	id: number;
