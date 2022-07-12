@@ -10,6 +10,8 @@ import {
 	Button,
 	Checkbox,
 	Anchor,
+	Divider,
+	Image,
 } from "@mantine/core";
 import { AuthContext } from "../context/AuthContext";
 
@@ -58,9 +60,18 @@ export function LoginForm(props: PaperProps<"div">) {
 
 	return (
 		<Paper radius="md" p="xl" withBorder {...props}>
-			<Text size="lg" weight={500} align="center">
-				{formType}
-			</Text>
+			<Group spacing={"xs"} grow style={{ marginBottom: "12px" }}>
+				<Button style={{ height: "42px", padding: "0px" }} color={"dark"}>
+					<Image src="/assets/GitHub-Mark-Light-64px.png" width={28} style={{ paddingRight: "8px" }} />
+					Auth with GitHub
+				</Button>
+				<Button style={{ height: "42px", padding: "0px" }} color={"dark"}>
+					<Image src="/assets/Google_ G _Logo.svg" width={26} style={{ paddingRight: "8px" }} />
+					Auth with Google
+				</Button>
+			</Group>
+
+			<Divider label="or" labelPosition="center" />
 
 			<form onSubmit={form.onSubmit(submitEvent)}>
 				<Group direction="column" grow>
