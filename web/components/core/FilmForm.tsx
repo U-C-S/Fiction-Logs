@@ -2,50 +2,56 @@ import { Paper, TextInput, Group, NumberInput, Button, Stack, Checkbox } from "@
 import { DatePicker } from "@mantine/dates";
 import { useForm, useToggle } from "@mantine/hooks";
 import React, { useContext } from "react";
-import { IPlanningFilm, IWatchedFilm, ProfileContext } from "../../lib/profileContext";
+import { IFilm, formType, IFilmFields, IFilmFormProps } from "../../types/film";
 
-interface IAddFilmFormProps {
-	isAlreadyPlanning?: boolean;
-	film?: IPlanningFilm;
-}
+export default function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
+	let isAlreadyPlanning = TypeOfForm === formType.edit_planning;
+	let isNew = TypeOfForm === formType.new;
 
-export default function FilmForm(
-	{ isAlreadyPlanning, film }: IAddFilmFormProps = { isAlreadyPlanning: false, film: {} as IPlanningFilm }
-) {
-	const [type, toggle] = useToggle("Watched", ["Watched", "Planning"]);
-	const profile = useContext(ProfileContext);
-	const theform = useForm<IWatchedFilm>({
+	const [isPlanMode, toggle] = useToggle(isAlreadyPlanning, [true, false]);
+	const theform = useForm<IFilmFields>({
 		initialValues: {
-			id: film?.id || Math.floor(Math.random() * 1000), // get the value of it from api
-			title: film?.title || "",
-			watchedOn: new Date(),
-			rating: 0,
-			comment: "",
+			name: isNew ? "" : (film?.name as string),
+			is_watched: !isPlanMode,
+			watched_on: isNew || isAlreadyPlanning ? new Date() : new Date(film?.watched_on?.toString() as string),
+			rating: isNew ? 0 : film?.rating,
+			comment: isNew ? "" : film?.comment,
 		},
 	});
-
-	function AddToList(values: IWatchedFilm) {
-		if (isAlreadyPlanning) {
-			profile.updateList(list => {
-				return {
-					watchedList: list.watchedList.concat(values),
-					planningList: list.planningList.filter(x => x.id !== values.id),
-				};
-			});
-		} else {
-			switch (type) {
-				case "Watched":
-					profile.updateList(c => {
-						return { watchedList: c.watchedList.concat(values), planningList: c.planningList };
-					});
-					break;
-				case "Planning":
-					profile.updateList(c => {
-						return { watchedList: c.watchedList, planningList: c.planningList.concat(values) };
-					});
-					break;
-			}
+	// console.log(theform.values.is_watched, WatchedMode);
+	async function AddToList(values: IFilmFields) {
+		let url;
+		let bodydata;
+		let method = "POST";
+		switch (TypeOfForm) {
+			case formType.new:
+				url = "/api/filmlist/add";
+				bodydata = { ...values, is_watched: !isPlanMode };
+				break;
+			case formType.edit_planning:
+			case formType.edit_watched:
+				method = "PUT";
+				url = "/api/filmlist/update";
+				bodydata = { id: film?.id, ...values, is_watched: !isPlanMode };
+				break;
+			default:
+				url = "/api/misc/fail";
+				bodydata = values;
+				break;
 		}
+
+		// console.warn({ id: film?.id, ...values, is_watched: !isPlanMode });
+
+		let req = await fetch((process.env.API_URL as string) + url, {
+			method,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: JSON.stringify(bodydata),
+		});
+		let data = await req.json();
+		if (data.success) alert("Film added to list");
 	}
 
 	return (
@@ -55,18 +61,12 @@ export default function FilmForm(
 					<TextInput
 						required
 						label="Title"
-						value={theform.values.title}
-						disabled={isAlreadyPlanning}
-						onChange={event => theform.setFieldValue("title", event.currentTarget.value)}
+						value={theform.values.name}
+						onChange={event => theform.setFieldValue("name", event.currentTarget.value)}
 						data-autofocus
 					/>
-					<Checkbox
-						checked={type === "Planning"}
-						label="Planning to Watch ??"
-						onChange={() => toggle()}
-						disabled={isAlreadyPlanning}
-					/>
-					{type === "Watched" && (
+					<Checkbox checked={isPlanMode} label="Planning to Watch ??" onChange={() => toggle()} />
+					{!isPlanMode && (
 						<>
 							<Group grow>
 								<NumberInput
@@ -74,21 +74,19 @@ export default function FilmForm(
 									placeholder="⭐ Give it a Rating"
 									min={0}
 									max={10}
-									value={theform.values.rating}
 									onChange={v => theform.setFieldValue("rating", v || 2)}
 								/>
 								<DatePicker
 									placeholder="Pick the date"
 									label="Watched it on"
 									inputFormat="YYYY-MM-DD"
-									value={theform.values.watchedOn}
-									onChange={v => theform.setFieldValue("watchedOn", v || new Date())}
+									value={theform.values.watched_on}
+									onChange={v => theform.setFieldValue("watched_on", v || new Date())}
 								/>
 							</Group>
 							<TextInput
 								label="Comment"
 								placeholder="What did you think about it ?"
-								value={theform.values.comment}
 								onChange={event => theform.setFieldValue("comment", event.currentTarget.value)}
 							/>
 						</>

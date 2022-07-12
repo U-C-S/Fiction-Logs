@@ -1,7 +1,7 @@
 import { createStyles, Menu, Modal, Paper, Title } from "@mantine/core";
 import React, { useContext, useState } from "react";
 import { Trash } from "tabler-icons-react";
-import { IFilm, IWatchedFilm } from "../../types/film";
+import { formType, IFilm, IWatchedFilm } from "../../types/film";
 import FilmForm from "./FilmForm";
 
 const useStyles = createStyles(() => ({
@@ -35,7 +35,7 @@ export function FilmCard({ data }: { data: IWatchedFilm }) {
 				<Title order={3}>{data.name}</Title>
 				<div>
 					<p>⭐ {data.rating}</p>
-					<p>{data.watched_on?.toISOString().slice(0, 10)}</p>
+					<p>{data.watched_on?.toString().slice(0, 10)}</p>
 				</div>
 			</div>
 		</Paper>
@@ -70,7 +70,7 @@ export function PlanningFilmCard({ id, name, editable }: { id: number; name: str
 			</div>
 			{editable && (
 				<Modal opened={openedModal} onClose={() => setOpenedModal(false)} title="Want to add something ?">
-					<FilmForm isAlreadyPlanning film={{ id, name }} />
+					<FilmForm film={{ id, name, is_watched: false }} TypeOfForm={formType.edit_planning} />
 				</Modal>
 			)}
 		</Paper>

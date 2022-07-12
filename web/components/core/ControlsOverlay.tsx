@@ -1,6 +1,7 @@
 import { ActionIcon, Affix, Button, Divider, Modal, Paper, Transition } from "@mantine/core";
 import { useState } from "react";
 import { Home2, Plus, Settings } from "tabler-icons-react";
+import { formType } from "../../types/film";
 import FilmForm from "./FilmForm";
 
 export function ControlsOverlay() {
@@ -40,7 +41,7 @@ export function ControlsOverlay() {
 				transition="pop"
 				transitionDuration={350}
 				transitionTimingFunction="ease">
-				<FilmForm />
+				<FilmForm TypeOfForm={formType.new} />
 			</Modal>
 		</Affix>
 	);

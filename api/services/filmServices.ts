@@ -49,7 +49,7 @@ export async function createFilm(
 				is_watched: film.is_watched,
 				comment: film.comment,
 				rating: film.is_watched ? film.rating : null,
-				watched_on: film.is_watched ? film.watched_on : null,
+				watched_on: film.is_watched ? new Date(film.watched_on?.toString() as string) : null,
 				profile: {
 					connect: { name: profilename },
 				},
@@ -86,7 +86,7 @@ export async function updateFilm(userId: number, film: IFilm): IQuery<null> {
 				is_watched: film.is_watched,
 				comment: film.comment,
 				rating: film.is_watched ? film.rating : null,
-				watched_on: film.is_watched ? film.watched_on : null,
+				watched_on: film.is_watched ? new Date(film.watched_on?.toString() as string) : null,
 			},
 		});
 
