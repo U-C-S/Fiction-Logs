@@ -1,5 +1,5 @@
 import fastifyCors from "@fastify/cors";
-import fastify, { FastifyServerOptions } from "fastify";
+import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
 
 import prismaPlugin from "./plugins/prisma";
 import { filmListRoutes } from "./routes/filmlist";
@@ -8,8 +8,8 @@ import { authRoutes } from "./routes/auth";
 import { miscRoutes } from "./routes/misc";
 import jwtPlugin from "./plugins/jwt-auth";
 
-export function buildFastifyServer(opts: FastifyServerOptions = {}) {
-	const app = fastify(opts);
+export default async function appFactory(fastify: FastifyInstance) {
+	const app = fastify;
 
 	app.register(jwtPlugin);
 	app.register(prismaPlugin);
@@ -23,5 +23,10 @@ export function buildFastifyServer(opts: FastifyServerOptions = {}) {
 	app.register(authRoutes, { prefix: "/auth" });
 	app.register(miscRoutes, { prefix: "/api/misc" });
 
+	return app;
+}
+export function buildFastifyServer(opts: FastifyServerOptions = {}): FastifyInstance {
+	const app = fastify(opts);
+	app.register(appFactory);
 	return app;
 }
