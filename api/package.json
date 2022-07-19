@@ -22,6 +22,7 @@
 		"dev:tsnode": "ts-node server.ts",
 		"start:prod": "tsc && node dist/server.js",
 		"start:serverless": "tsc && node dist/serverless.js",
+		"vercel-build": "prisma generate && tsc",
 		"build": "tsc",
 		"init": "prisma init",
 		"pull": "prisma db pull",
