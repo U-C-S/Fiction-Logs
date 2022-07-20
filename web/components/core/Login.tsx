@@ -46,7 +46,7 @@ export function LoginForm(props: PaperProps<"div">) {
 			}),
 		};
 
-		let res = await fetch(`${process.env.API_URL}/auth/${formType}`, fetchOpts);
+		let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${formType}`, fetchOpts);
 		let resData = await res.json();
 
 		console.log(resData);

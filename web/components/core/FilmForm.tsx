@@ -40,7 +40,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 				break;
 		}
 
-		let req = await fetch((process.env.API_URL as string) + url, {
+		let req = await fetch((process.env.NEXT_PUBLIC_API_URL as string) + url, {
 			method,
 			headers: {
 				"Content-Type": "application/json",

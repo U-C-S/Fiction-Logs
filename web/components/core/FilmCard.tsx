@@ -45,7 +45,7 @@ export function FilmCard({
 	const [openedModal, setOpenedModal] = useState(false);
 
 	async function Delete() {
-		let req = await fetch(process.env.API_URL + `/api/filmlist/delete/${data.id}`, {
+		let req = await fetch(process.env.NEXT_PUBLIC_API_URL + `/api/filmlist/delete/${data.id}`, {
 			method: "DELETE",
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
