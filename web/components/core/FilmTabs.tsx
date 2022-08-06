@@ -9,8 +9,12 @@ import { LoadingScreen } from "./LoadingScreen";
 export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: boolean }) {
 	return (
 		<div style={{ marginTop: "1rem", width: "clamp(300px, 60%, 550px)" }}>
-			<Tabs grow>
-				<Tabs.Tab label="Watched" icon={<Photo size={20} />}>
+			<Tabs>
+				<Tabs.List>
+					<Tabs.Tab value="Watched" icon={<Photo size={20} />} />
+					<Tabs.Tab value="Planning" icon={<Edit size={20} />} />
+				</Tabs.List>
+				<Tabs.Panel value="Watched">
 					<Stack>
 						{filmsList.map(film => {
 							if (film.is_watched) {
@@ -19,8 +23,8 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 						})}
 						<Space h={70} />
 					</Stack>
-				</Tabs.Tab>
-				<Tabs.Tab label="Planning" icon={<Edit size={20} />}>
+				</Tabs.Panel>
+				<Tabs.Panel value="Planning">
 					<Stack>
 						{filmsList.map(film => {
 							if (!film.is_watched) {
@@ -28,7 +32,7 @@ export function FilmTabs({ filmsList, isOwner }: { filmsList: IFilm[]; isOwner: 
 							}
 						})}
 					</Stack>
-				</Tabs.Tab>
+				</Tabs.Panel>
 			</Tabs>
 		</div>
 	);
