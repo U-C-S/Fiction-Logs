@@ -1,6 +1,7 @@
 import { Paper, TextInput, Group, NumberInput, Button, Stack, Checkbox } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { useForm, useToggle } from "@mantine/hooks";
+import { useToggle } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
 import React, { useContext } from "react";
 import { IFilm, formType, IFilmFields, IFilmFormProps } from "../../types/film";
 
@@ -8,7 +9,7 @@ export function FilmForm({ film, TypeOfForm }: IFilmFormProps) {
 	let isAlreadyPlanning = TypeOfForm === formType.edit_planning;
 	let isNew = TypeOfForm === formType.new;
 
-	const [isPlanMode, toggle] = useToggle(isAlreadyPlanning, [true, false]);
+	const [isPlanMode, toggle] = useToggle([isAlreadyPlanning == true, !isAlreadyPlanning]);
 	const theform = useForm<IFilmFields>({
 		initialValues: {
 			name: isNew ? "" : (film?.name as string),
