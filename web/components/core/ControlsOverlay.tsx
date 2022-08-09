@@ -23,23 +23,18 @@ export function ControlsOverlay() {
 						}}>
 						{authData ? (
 							<>
-								<ActionIcon
-									p={5}
-									variant="hover"
-									size="lg"
-									color={"indigo"}
-									onClick={() => Router.push("/me")}>
+								<ActionIcon p={5} variant="transparent" size="lg" onClick={() => Router.push("/me")}>
 									<Home2 />
 								</ActionIcon>
-								<Button leftIcon={<Plus />} onClick={() => setOpened(true)} color={"indigo"}>
+								<Button leftIcon={<Plus />} onClick={() => setOpened(true)}>
 									Add
 								</Button>
-								<ActionIcon p={5} variant="hover" size="lg" color={"indigo"}>
+								<ActionIcon p={5} variant="transparent" size="lg">
 									<Settings />
 								</ActionIcon>
 							</>
 						) : (
-							<Button leftIcon={<Plus />} onClick={() => Router.push("/")} color={"indigo"}>
+							<Button leftIcon={<Plus />} onClick={() => Router.push("/")}>
 								Authenticate
 							</Button>
 						)}
