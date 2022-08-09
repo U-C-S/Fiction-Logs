@@ -79,18 +79,20 @@ export function FilmCard({
 				)}
 			</div>
 			{editable && (
-				<Menu
-					control={
+				<Menu>
+					<Menu.Target>
 						<ActionIcon>
 							<DotsVertical size={20} />
 						</ActionIcon>
-					}>
-					<Menu.Item icon={<Edit size={14} />} onClick={() => setOpenedModal(true)}>
-						Edit
-					</Menu.Item>
-					<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
-						Delete
-					</Menu.Item>
+					</Menu.Target>
+					<Menu.Dropdown>
+						<Menu.Item icon={<Edit size={14} />} onClick={() => setOpenedModal(true)}>
+							Edit
+						</Menu.Item>
+						<Menu.Item color="red" icon={<Trash size={14} />} onClick={Delete}>
+							Delete
+						</Menu.Item>
+					</Menu.Dropdown>
 				</Menu>
 			)}
 			{editable && (

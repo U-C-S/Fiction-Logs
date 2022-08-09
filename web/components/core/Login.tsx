@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { useForm, useToggle } from "@mantine/hooks";
+import { useToggle } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
 import {
 	TextInput,
 	PasswordInput,
@@ -12,11 +13,12 @@ import {
 	Anchor,
 	Divider,
 	Image,
+	Stack,
 } from "@mantine/core";
 import { AuthContext } from "../context/AuthContext";
 
-export function LoginForm(props: PaperProps<"div">) {
-	const [formType, toggleFormType] = useToggle("login", ["login", "register"]);
+export function LoginForm(props: PaperProps) {
+	const [formType, toggleFormType] = useToggle(["login", "register"]);
 	const { setAuth } = useContext(AuthContext);
 
 	const form = useForm({
@@ -74,7 +76,7 @@ export function LoginForm(props: PaperProps<"div">) {
 			<Divider label="or" labelPosition="center" />
 
 			<form onSubmit={form.onSubmit(submitEvent)}>
-				<Group direction="column" grow>
+				<Stack>
 					{formType === "register" && (
 						<TextInput
 							required
@@ -110,7 +112,7 @@ export function LoginForm(props: PaperProps<"div">) {
 							onChange={event => form.setFieldValue("terms", event.currentTarget.checked)}
 						/>
 					)}
-				</Group>
+				</Stack>
 
 				<Group position="apart" mt="xl">
 					<Anchor component="button" type="button" color="gray" onClick={() => toggleFormType()} size="xs">
